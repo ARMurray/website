@@ -2,113 +2,113 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Homes on Andrew Murray</title>
-    <link>/home/</link>
+    <link>/amurraygeo.com/home/</link>
     <description>Recent content in Homes on Andrew Murray</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
     <lastBuildDate>Sun, 15 Oct 2017 00:00:00 -0400</lastBuildDate>
     
-	<atom:link href="/home/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/amurraygeo.com/home/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title></title>
-      <link>/home/hero_carousel/</link>
+      <link>/amurraygeo.com/home/hero_carousel/</link>
       <pubDate>Sun, 15 Oct 2017 00:00:00 -0400</pubDate>
       
-      <guid>/home/hero_carousel/</guid>
+      <guid>/amurraygeo.com/home/hero_carousel/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Andrew&#39;s Quest for a PhD</title>
-      <link>/home/hero/</link>
+      <link>/amurraygeo.com/home/hero/</link>
       <pubDate>Sun, 15 Oct 2017 00:00:00 -0400</pubDate>
       
-      <guid>/home/hero/</guid>
+      <guid>/amurraygeo.com/home/hero/</guid>
       <description>The start of something beautiful&amp;hellip; 🚀 Latest release  
 (function defer() { if (window.jQuery) { jQuery(document).ready(function(){ GetLatestReleaseInfo(); }); } else { setTimeout(function() { defer() }, 50); } })(); function GetLatestReleaseInfo() { $.getJSON(&#39;https://api.github.com/repos/gcushen/hugo-academic/tags&#39;).done(function (json) { let release = json[0]; // let downloadURL = release.zipball_url; $(&#39;#academic-release&#39;).text(&#39;Latest release &#39; + release.name); }); }  </description>
     </item>
     
     <item>
       <title></title>
-      <link>/home/about/</link>
+      <link>/amurraygeo.com/home/about/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/about/</guid>
+      <guid>/amurraygeo.com/home/about/</guid>
       <description>Biography I am a PhD student in the Carbonshed lab at the University of North Carolina - Chapel Hill working under the advisement of Dr. Diego Riveros-Iregui. My research interests focus on surface-groundwater interactions and vulnerability to human health from various sources of contamination. I am currently researching carbon flux rates from freshwater streams and rivers to the atmosphere. I am also researching potential vulnerability of private water well systems to contamination from hydraulic fracturing activities accross the United States.</description>
     </item>
     
     <item>
       <title>Skills</title>
-      <link>/home/skills/</link>
+      <link>/amurraygeo.com/home/skills/</link>
       <pubDate>Wed, 20 Sep 2017 00:00:00 -0400</pubDate>
       
-      <guid>/home/skills/</guid>
+      <guid>/amurraygeo.com/home/skills/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Selected Publications</title>
-      <link>/home/publications_selected/</link>
+      <link>/amurraygeo.com/home/publications_selected/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/publications_selected/</guid>
+      <guid>/amurraygeo.com/home/publications_selected/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Recent Publications</title>
-      <link>/home/publications/</link>
+      <link>/amurraygeo.com/home/publications/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/publications/</guid>
+      <guid>/amurraygeo.com/home/publications/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Selected Talks</title>
-      <link>/home/talks_selected/</link>
+      <link>/amurraygeo.com/home/talks_selected/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/talks_selected/</guid>
+      <guid>/amurraygeo.com/home/talks_selected/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Recent &amp; Upcoming Talks</title>
-      <link>/home/talks/</link>
+      <link>/amurraygeo.com/home/talks/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/talks/</guid>
+      <guid>/amurraygeo.com/home/talks/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Recent Posts</title>
-      <link>/home/posts/</link>
+      <link>/amurraygeo.com/home/posts/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/posts/</guid>
+      <guid>/amurraygeo.com/home/posts/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Projects</title>
-      <link>/home/projects/</link>
+      <link>/amurraygeo.com/home/projects/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/projects/</guid>
+      <guid>/amurraygeo.com/home/projects/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Teaching</title>
-      <link>/home/teaching/</link>
+      <link>/amurraygeo.com/home/teaching/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/teaching/</guid>
+      <guid>/amurraygeo.com/home/teaching/</guid>
       <description>This is an example of using the custom widget to create your own homepage section.
 I am a teaching assistant for the following courses:
  Geog 110: Blue Planet Geog 111: Weather and Climate  </description>
@@ -116,28 +116,28 @@ I am a teaching assistant for the following courses:
     
     <item>
       <title>Tags</title>
-      <link>/home/tags/</link>
+      <link>/amurraygeo.com/home/tags/</link>
       <pubDate>Wed, 20 Sep 2017 00:00:00 -0400</pubDate>
       
-      <guid>/home/tags/</guid>
+      <guid>/amurraygeo.com/home/tags/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Search</title>
-      <link>/home/search/</link>
+      <link>/amurraygeo.com/home/search/</link>
       <pubDate>Mon, 23 Jul 2018 00:00:00 -0400</pubDate>
       
-      <guid>/home/search/</guid>
+      <guid>/amurraygeo.com/home/search/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Contact</title>
-      <link>/home/contact/</link>
+      <link>/amurraygeo.com/home/contact/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/contact/</guid>
+      <guid>/amurraygeo.com/home/contact/</guid>
       <description></description>
     </item>
     
