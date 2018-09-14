@@ -15,9 +15,9 @@ weight = 60
 
 +++
 
-This is an example of using the *custom* widget to create your own homepage section.
 
-I am a teaching assistant for the following courses:
+
+I am a teaching assistant for the following courses at UNC - Chapel Hill:
 
 - Geog 110: Blue Planet
 - Geog 111: Weather and Climate

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fracking on Andrew Murray</title>
+    <link>/tags/fracking/</link>
+    <description>Recent content in Fracking on Andrew Murray</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Tue, 11 Sep 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/fracking/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Domestic Wells and Fracking</title>
+      <link>/project/domestic-wells-and-fracking/</link>
+      <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/project/domestic-wells-and-fracking/</guid>
+      <description>Methane Contamination of Wells In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed.</description>
+    </item>
+    
+  </channel>
+</rss>

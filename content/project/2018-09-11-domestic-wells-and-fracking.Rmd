@@ -1,0 +1,32 @@
+---
+title: "Domestic Wells and Fracking"
+author: "Andrew"
+date: '2018-09-11'
+image_preview: well.jpg
+header:
+  caption: ''
+  image: 
+slug: domestic-wells-and-fracking
+tags:
+- wells
+- fracking
+- methane
+categories: R
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+# Methane Contamination of Wells
+
+In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed.
+
+You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+fit <- lm(dist ~ speed, data = cars)
+fit
+```
+
