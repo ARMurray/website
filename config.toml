@@ -99,11 +99,11 @@ enableGitInfo = false
   #   1: Google Maps
   #   2: OpenStreetMap (Mapnik)
   #   3: OpenStreetMap (Mapbox)
-  map = 0
-  map_api_key = ""
-  latitude = "37.4275"
-  longitude = "-122.1697"
-  zoom = 15
+  map = 1
+  map_api_key = "AIzaSyAb9pnaPoR6EnC_JvtHwXVtb_2IXxIW1uU"
+  latitude = "35.909444"
+  longitude = "-79.051729"
+  zoom = 12
 
   # Date and time format (refer to https://sourcethemes.com/academic/docs/customization/#date-format )
   #   Examples: "Mon, Jan 2, 2006" or "2006-01-02"
