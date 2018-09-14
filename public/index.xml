@@ -19,24 +19,6 @@
       <description>&lt;div id=&#34;methane-contamination-of-wells&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Methane Contamination of Wells&lt;/h1&gt;
 &lt;p&gt;In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed.&lt;/p&gt;
-&lt;p&gt;You can embed an R code chunk like this:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &amp;lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 </description>
     </item>
@@ -329,10 +311,10 @@ Figure 1: A fancy pie chart.
     
     <item>
       <title>Carbon Flux</title>
-      <link>/project/domestic-wells-and-fracking/</link>
+      <link>/project/carbon-flux/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/project/domestic-wells-and-fracking/</guid>
+      <guid>/project/carbon-flux/</guid>
       <description>&lt;div id=&#34;flux-from-north-carolina-streams&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Flux From North Carolina Streams&lt;/h2&gt;
 &lt;p&gt;The varying rates at which carbon migrates from freshwater streams into the atmosphere is poorly understood. This research aims to understand how carbon flux from freshwater streams to the atmosphere varies depending on variables such as discharge, stream slope, and land use.&lt;/p&gt;
