@@ -43,7 +43,7 @@ filter_default = 0
 
 [[filter]]
   name = "Deal Me In"
-  tag = "dealmein"
+  tag = "shiny"
 
 +++
 

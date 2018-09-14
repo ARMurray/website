@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shiny on Andrew Murray</title>
+    <link>/tags/shiny/</link>
+    <description>Recent content in Shiny on Andrew Murray</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Fri, 14 Sep 2018 11:39:00 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/shiny/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Deal Me In</title>
+      <link>/project/dealmein/</link>
+      <pubDate>Fri, 14 Sep 2018 11:39:00 -0400</pubDate>
+      
+      <guid>/project/dealmein/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

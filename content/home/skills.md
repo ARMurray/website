@@ -28,13 +28,13 @@ weight = 7
   description = "Geocomputation / Data Vizualization / Statistics"
   
 [[feature]]
-  icon = "chart-line"
+  icon = "map-marked-alt"
   icon_pack = "fas"
   name = "GIS"
   description = "Expert in ESRI Products"  
   
 [[feature]]
-  icon = "camera-retro"
+  icon = "globe-americas"
   icon_pack = "fas"
   name = "Remote Sensing"
   description = "ENVI"
