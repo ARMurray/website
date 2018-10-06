@@ -26,6 +26,7 @@ paginate = 10
 disqusShortname = ""
 
 # Enable analytics by entering your Google Analytics tracking ID
+googleAnalytics = "UA-125661405-1"
 
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "en"
@@ -68,6 +69,7 @@ enableGitInfo = false
   avatar = "headshot.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
   email = "Armurray@live.unc.edu"
   address = "3101 Murray Hall, University of North Carolina, Chapel Hill, 27514, USA"
+  office_hours = "Office Hours: Mondays and Wednesdays 9:30 to 11:00 or email for appointment"
   phone = ""
   skype = ""
   telegram = ""
