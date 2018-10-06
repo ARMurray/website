@@ -27,7 +27,7 @@
   
   
   
-  <meta name="theme-color" content="#0095eb">
+  <meta name="theme-color" content="#4caf50">
   
 
   
@@ -289,36 +289,10 @@ url('/img/Old_Well_Snow.jpg');
     </h1>
 
     
-    <p class="hero-lead">The start of something beautiful&hellip; 🚀
-<br>
-<small><a id="academic-release" href="https://sourcethemes.com/academic/updates">Latest release</a></small>
-<br><br>
-<iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=gcushen&amp;repo=hugo-academic&amp;type=star&amp;count=true&amp;size=large" scrolling="0" width="160px" height="30px" frameborder="0"></iframe>
-<iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=gcushen&amp;repo=hugo-academic&amp;type=fork&amp;count=true&amp;size=large" scrolling="0" width="158px" height="30px" frameborder="0"></iframe></p>
-
-<script type="text/javascript">
-  (function defer() {
-    if (window.jQuery) {
-      jQuery(document).ready(function(){
-        GetLatestReleaseInfo();
-      });
-    } else {
-      setTimeout(function() { defer() }, 50);
-    }
-  })();  
-  function GetLatestReleaseInfo() {
-    $.getJSON('https://api.github.com/repos/gcushen/hugo-academic/tags').done(function (json) {
-      let release = json[0];
-      // let downloadURL = release.zipball_url;
-      $('#academic-release').text('Latest release ' + release.name);  
-    });    
-}  
-</script>
-</p>
+    <p class="hero-lead"><br>
+<br></p>
     
 
-    
-    <p><a href="./post/getting-started/" class="btn btn-light btn-outline btn-large"><i class="fas fa-download"></i> Install Now</a></p>
     
 
   </div>
@@ -402,8 +376,17 @@ url('/img/Old_Well_Snow.jpg');
           
         
         <li>
-          <a itemprop="sameAs" href="//github.com/gcushen" target="_blank" rel="noopener">
+          <a itemprop="sameAs" href="https://github.com/ARMurray" target="_blank" rel="noopener">
             <i class="fab fa-github big-icon"></i>
+          </a>
+        </li>
+        
+        
+        
+        
+        <li>
+          <a itemprop="sameAs" href="files/cv.pdf" target="_blank" rel="noopener">
+            <i class="ai ai-cv big-icon"></i>
           </a>
         </li>
         
@@ -518,7 +501,7 @@ systems to contamination from hydraulic fracturing activities accross the United
     
   
   <div class="col-sm-4">
-    <div class="featurette-icon"><i class="fas fa-chart-line"></i></div>
+    <div class="featurette-icon"><i class="fas fa-globe-americas"></i></div>
     <h3>GIS</h3>
     <p>Expert in ESRI Products</p>
   </div>
@@ -529,9 +512,9 @@ systems to contamination from hydraulic fracturing activities accross the United
     
   
   <div class="col-sm-4">
-    <div class="featurette-icon"><i class="fas fa-camera-retro"></i></div>
-    <h3>Remote Sensing</h3>
-    <p>ENVI</p>
+    <div class="featurette-icon"><i class="fab fa-python"></i></div>
+    <h3>Python</h3>
+    <p>Scripting</p>
   </div>
   
 </div>
@@ -1420,11 +1403,6 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       
 
       
-      <li>
-        <i class="fa-li fab fa-telegram fa-2x" aria-hidden="true"></i>
-        <span><a href="https://telegram.me/![]%28/blogdowntest3/config_files/IMG_20170630_191740.jpg%29![]%28/blogdowntest3/config_files/IMG_20170630_191740.jpg%29" target="_blank" rel="noopener">@![](/blogdowntest3/config_files/IMG_20170630_191740.jpg)![](/blogdowntest3/config_files/IMG_20170630_191740.jpg)</a></span>
-      </li>
-      
 
       
       <li>
@@ -1442,6 +1420,16 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
 
     </ul>
 
+    
+    <div class="hidden">
+      <input id="map-provider" value="1">
+      <input id="map-lat" value="35.909425">
+      <input id="map-lng" value="-79.051678">
+      <input id="map-dir" value="3101 Murray Hall, University of North Carolina, Chapel Hill, 27514, USA">
+      <input id="map-zoom" value="12">
+      <input id="map-api-key" value="AIzaSyDpO58VMAQYAydpbuAub0LEnUeUqKr1AO8">
+    </div>
+    <div id="map"></div>
     
 
   </div>
@@ -1534,6 +1522,11 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
     
 
     
+    
+      <script async defer src="//maps.googleapis.com/maps/api/js?key=AIzaSyDpO58VMAQYAydpbuAub0LEnUeUqKr1AO8"></script>
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.min.js" integrity="sha256-7vjlAeb8OaTrCXZkCNun9djzuB2owUsaO72kXaFDBJs=" crossorigin="anonymous"></script>
+      
     
 
     

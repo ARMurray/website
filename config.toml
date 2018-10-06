@@ -6,7 +6,7 @@
 
 # The URL of your website.
 # End your URL with a `/` trailing slash, e.g. `https://example.com/`.
-baseurl = "http://www.amurraygeo.com/"
+baseurl = "https://www.amurraygeo.com/"
 
 # Title of your site
 title = "Andrew Murray"
@@ -33,6 +33,7 @@ defaultContentLanguage = "en"
 hasCJKLanguage = false  # Set `true` for Chinese/Japanese/Korean languages.
 defaultContentLanguageInSubdir = false
 
+
 # Get last modified date for content from Git?
 enableGitInfo = false
 
@@ -50,7 +51,7 @@ enableGitInfo = false
 [params]
   # Color theme.
   #   Choose from `default`, `ocean`, `forest`, `coffee`, `dark`, or `1950s`.
-  color_theme = "default"
+  color_theme = "forest"
 
   # Font style.
   #   Choose from `default`, `classic`, or `playfair`.
@@ -71,7 +72,7 @@ enableGitInfo = false
   office_hours = "Mondays and Wednesdays 9:30 to 11:00 or email for appointment"
   phone = ""
   skype = ""
-  telegram = "![](/blogdowntest3/config_files/IMG_20170630_191740.jpg)![](/blogdowntest3/config_files/IMG_20170630_191740.jpg)"
+  telegram = ""
 
   # Enable Keybase in Contact widget by entering your keybase.io username.
   keybase = ""
@@ -99,11 +100,11 @@ enableGitInfo = false
   #   1: Google Maps
   #   2: OpenStreetMap (Mapnik)
   #   3: OpenStreetMap (Mapbox)
-  map = 0
-  map_api_key = ""
-  latitude = "37.4275"
-  longitude = "-122.1697"
-  zoom = 15
+  map = 1
+  map_api_key = "AIzaSyDpO58VMAQYAydpbuAub0LEnUeUqKr1AO8"
+  latitude = "35.909425"
+  longitude = "-79.051678"
+  zoom = 12
 
   # Date and time format (refer to https://sourcethemes.com/academic/docs/customization/#date-format )
   #   Examples: "Mon, Jan 2, 2006" or "2006-01-02"
@@ -242,14 +243,14 @@ enableGitInfo = false
   [[params.social]]
     icon = "github"
     icon_pack = "fab"
-    link = "//github.com/gcushen"
+    link = "https://github.com/ARMurray"
 
   # Link to a PDF of your resume/CV from the About widget.
   # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
-  # [[params.social]]
-  #   icon = "cv"
-  #   icon_pack = "ai"
-  #   link = "files/cv.pdf"
+   [[params.social]]
+     icon = "cv"
+     icon_pack = "ai"
+     link = "files/cv.pdf"
 
 # Navigation Links
 #   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
