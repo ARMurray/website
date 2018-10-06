@@ -28,15 +28,26 @@ weight = 7
   description = "Geocomputation / Data Vizualization / Statistics"
   
 [[feature]]
+<<<<<<< HEAD
   icon = "globe-americas"
+=======
+  icon = "map-marked-alt"
+>>>>>>> b52e77c5a985a28ab15c3a7e53d6fe112f932a0c
   icon_pack = "fas"
   name = "GIS"
   description = "Expert in ESRI Products"  
   
 [[feature]]
+<<<<<<< HEAD
   icon = "python"
   icon_pack = "fab"
   name = "Python"
   description = "Scripting"
+=======
+  icon = "globe-americas"
+  icon_pack = "fas"
+  name = "Remote Sensing"
+  description = "ENVI"
+>>>>>>> b52e77c5a985a28ab15c3a7e53d6fe112f932a0c
 
 +++

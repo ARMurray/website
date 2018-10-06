@@ -26,7 +26,6 @@ paginate = 10
 disqusShortname = ""
 
 # Enable analytics by entering your Google Analytics tracking ID
-googleAnalytics = ""
 
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "en"
@@ -69,7 +68,6 @@ enableGitInfo = false
   avatar = "headshot.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
   email = "Armurray@live.unc.edu"
   address = "3101 Murray Hall, University of North Carolina, Chapel Hill, 27514, USA"
-  office_hours = "Mondays and Wednesdays 9:30 to 11:00 or email for appointment"
   phone = ""
   skype = ""
   telegram = ""
@@ -101,9 +99,15 @@ enableGitInfo = false
   #   2: OpenStreetMap (Mapnik)
   #   3: OpenStreetMap (Mapbox)
   map = 1
+<<<<<<< HEAD
   map_api_key = "AIzaSyDpO58VMAQYAydpbuAub0LEnUeUqKr1AO8"
   latitude = "35.909425"
   longitude = "-79.051678"
+=======
+  map_api_key = "AIzaSyAb9pnaPoR6EnC_JvtHwXVtb_2IXxIW1uU"
+  latitude = "35.909444"
+  longitude = "-79.051729"
+>>>>>>> b52e77c5a985a28ab15c3a7e53d6fe112f932a0c
   zoom = 12
 
   # Date and time format (refer to https://sourcethemes.com/academic/docs/customization/#date-format )
@@ -243,7 +247,11 @@ enableGitInfo = false
   [[params.social]]
     icon = "github"
     icon_pack = "fab"
+<<<<<<< HEAD
     link = "https://github.com/ARMurray"
+=======
+    link = "//github.com/armurray"
+>>>>>>> b52e77c5a985a28ab15c3a7e53d6fe112f932a0c
 
   # Link to a PDF of your resume/CV from the About widget.
   # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.

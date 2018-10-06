@@ -35,15 +35,15 @@ filter_default = 0
 
 [[filter]]
   name = "Carbon Flux"
-  tag = "Carbon"
+  tag = "carbon"
   
 [[filter]]
   name = "Groundwater Wells"
-  tag = "Wells"
+  tag = "wells"
 
 [[filter]]
-  name = "Other"
-  tag = "Demo"
+  name = "Deal Me In"
+  tag = "shiny"
 
 +++
 

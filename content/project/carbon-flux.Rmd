@@ -1,0 +1,36 @@
+---
+title: "Carbon Flux"
+author: "Andrew"
+date: "9/11/2018"
+image_preview: instruments_crop.jpg
+header:
+  caption: ''
+  image: instruments.jpg
+slug: carbon-flux
+tags:
+- carbon
+categories: R
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Flux From North Carolina Streams
+
+The varying rates at which carbon migrates from freshwater streams into the atmosphere is poorly understood. This research aims to understand how carbon flux from freshwater streams to the atmosphere varies depending on variables such as discharge, stream slope, and land use. 
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -4,7 +4,7 @@ widget = "hero"
 active = true
 date = 2017-10-15T00:00:00
 
-title = "Andrew's Quest for a PhD"
+title = "<br>Andrew Murray's Work in Geography <br><br><br>"
 
 # Order that this section will appear in.
 weight = 3
@@ -13,8 +13,8 @@ weight = 3
 #   Deactivate an option by commenting out the line, prefixing it with `#`.
 [header]
   overlay_color = "#666"  # An HTML color value.
-  overlay_img = "Old_Well_Snow.jpg"  # Image path relative to your `static/img/` folder.
-  overlay_filter = 0.5  # Darken the image. Value in range 0-1.
+  overlay_img = "Old_Well_Snow_wide.jpg"  # Image path relative to your `static/img/` folder.
+  overlay_filter = 0.2  # Darken the image. Value in range 0-1.
 
 
 
@@ -26,5 +26,8 @@ weight = 3
 
 
 <br>
+<<<<<<< HEAD
 <br>
 
+=======
+>>>>>>> b52e77c5a985a28ab15c3a7e53d6fe112f932a0c
