@@ -28,6 +28,64 @@
       <description>&lt;div id=&#34;methane-contamination-of-wells&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Methane Contamination of Wells&lt;/h1&gt;
 &lt;p&gt;In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed.&lt;/p&gt;
+&lt;div id=&#34;this-is-the-working-file-for-my-hydraulic-fracturing-impact-analysis-paper.-upon-its-completion-you-will-find-it-posted-here&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;This is the working file for my hydraulic fracturing impact analysis paper. Upon it’s completion you will find it posted &lt;a href=&#34;https://amurraygeo.com&#34;&gt;here&lt;/a&gt;&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div id=&#34;overview&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;The purpose of this paper is to identify populations vulnerable to impacts from hydraulic fracturing activities, specifically based on their usage of privately owned domestic water wells. This is a living document to maintain the reproducibility and transparency of this research while also serving as an aid for others interested in doing similar work.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-preparation&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data Preparation&lt;/h1&gt;
+&lt;div id=&#34;libraries&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Libraries&lt;/h2&gt;
+&lt;p&gt;First we’ll load the packages we need for our analysis:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)
+library(dplyr)
+library(ggplot2)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;read-in-the-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Read in the Data&lt;/h2&gt;
+&lt;p&gt;Next, we’ll read in the data. Our data here is all in the NAD83 coordinate system and is unprojected, so we use the crs ‘4269’ which is NAD83 and import the shapefiles and csv and create sf objects. Then we project all of the data to UTM zone 17N which encompasses eastern Ohio.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;blocks &amp;lt;- st_read(&amp;#39;Blocks_5mi_Utica_NAD83.shp&amp;#39;, crs = 4269)
+blocks_prj &amp;lt;-  st_transform(blocks, 2958)
+Wells &amp;lt;- read.csv(&amp;#39;Downloaded/Utica_092218.csv&amp;#39;)
+Wells_sf &amp;lt;- st_as_sf(Wells, coords = c(&amp;quot;Surf_Lon&amp;quot;,&amp;quot;Surf_Lat&amp;quot;), crs = 4269)
+Wells_prj &amp;lt;- st_transform(Wells_sf, 2958)
+counties &amp;lt;- st_read(&amp;#39;counties_NAD83.shp&amp;#39;, crs = 4269)
+counties_prj &amp;lt;- st_transform(counties, 2958)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;setting-up-data-to-plot&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Setting Up Data to Plot&lt;/h2&gt;
+&lt;p&gt;We need to create centroids from the county layer so that we can use them to add text labels to the map. We do this by getting the coordinates of the centroids using st_centroid and then separating the x and y coordinates and putting them into a new sf object. Also here, we create a new object that gets the bounding box of the oil/gas wells. We’ll use this to create the extent of our map (so it is zoomed in to the right place). Finally we create a color palette which we use to symbolize the wells in the map.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;centroids &amp;lt;- st_centroid(counties_prj)
+centroids_xy &amp;lt;- st_coordinates(centroids)
+centroids$X &amp;lt;- centroids_xy[,1]
+centroids$Y &amp;lt;- centroids_xy[,2]
+bbox &amp;lt;- st_bbox(Wells_prj)
+well_palette &amp;lt;- c(&amp;quot;#FF8500&amp;quot;, &amp;quot;#FFE600&amp;quot;, &amp;quot;#65E809&amp;quot;, &amp;quot;#E81903&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;making-our-first-plot&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Making Our First Plot&lt;/h2&gt;
+&lt;p&gt;The code chunk below plots the map below which displays oil and gas well data obtained from the Ohio Department of Natural Resources. These are wells drilled into the Utica Shale and are color coded by their status (as of September 22, 2018). Using the ggplot and sf packages, the data includes wells and U.S. counties, both projected in UTM 17N. The last line of code sets the coordinate limits of the map based on the well data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + geom_sf(data = counties_prj)+
+  geom_sf(data = Wells_prj, aes(colour=Status, fill = Status))+ 
+  scale_fill_manual(values = well_palette) + scale_color_manual(values = well_palette)+
+  geom_text(data = centroids, aes(x = X, y = Y, label = NAME10),size = 2.5)+
+  xlim(as.integer(bbox$xmin), as.integer(bbox$xmax)) + ylim(as.integer(bbox$ymin), as.integer(bbox$ymax))&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/img/Utica_Wells.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;geometries-and-thresholds&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Geometries and Thresholds&lt;/h2&gt;
+&lt;p&gt;The focus of this research is identifying domestic wells that are at potential risk of contamination from methane migration through the ground.We are working with different geographies, mainly Census Blocks and Buffered areas around oil and gas wells. Since the buffers slice through the Census areas, we’ll need to estimate the number of people that live within each Census block and also live within the buffer of the oil/gas well. To accomplish this, we will use the sf package and the intersect function to create new geometries of Census blocks within buffers.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;this-is-the-end-of-the-document-for-now-please-check-back-soon-to-see-the-progress&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;This is the end of the document for now, please check back soon to see the progress!&lt;/h1&gt;
 &lt;/div&gt;
 </description>
     </item>

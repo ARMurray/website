@@ -2,10 +2,10 @@
 title: "Domestic Wells and Fracking"
 author: "Andrew"
 date: '2018-09-11'
-image_preview: well.jpg
 header:
   caption: ''
-  image: 
+  image: null
+image_preview: well.jpg
 slug: domestic-wells-and-fracking
 tags:
 - wells
@@ -22,5 +22,67 @@ knitr::opts_chunk$set(collapse = TRUE)
 
 In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed.
 
+
+### This is the working file for my hydraulic fracturing impact analysis paper. Upon it's completion you will find it posted [here](https://amurraygeo.com)
+
+
+## Overview
+
+  The purpose of this paper is to identify populations vulnerable to impacts from hydraulic fracturing activities, specifically based on their usage of privately owned domestic water wells. This is a living document to maintain the reproducibility and transparency of this research while also serving as an aid for others interested in doing similar work.
+
+#Data Preparation
+##Libraries
+First we'll load the packages we need for our analysis:
+```{r message=FALSE, echo = TRUE, warning=FALSE}
+library(sf)
+library(dplyr)
+library(ggplot2)
+```
+
+##Read in the Data
+Next, we'll read in the data. Our data here is all in the NAD83 coordinate system and is unprojected, so we use the crs '4269' which is NAD83 and import the shapefiles and csv and create sf objects. Then we project all of the data to UTM zone 17N which encompasses eastern Ohio.
+```{r message=FALSE, eval = FALSE, echo = TRUE, warning=FALSE, results='hide'}
+blocks <- st_read('Blocks_5mi_Utica_NAD83.shp', crs = 4269)
+blocks_prj <-  st_transform(blocks, 2958)
+Wells <- read.csv('Downloaded/Utica_092218.csv')
+Wells_sf <- st_as_sf(Wells, coords = c("Surf_Lon","Surf_Lat"), crs = 4269)
+Wells_prj <- st_transform(Wells_sf, 2958)
+counties <- st_read('counties_NAD83.shp', crs = 4269)
+counties_prj <- st_transform(counties, 2958)
+```
+
+##Setting Up Data to Plot
+We need to create centroids from the county layer so that we can use them to add text labels to the map. We do this by getting the coordinates of the centroids using st_centroid and then separating the x and y coordinates and putting them into a new sf object. Also here, we create a new object that gets the bounding box of the oil/gas wells. We'll use this to create the extent of our map (so it is zoomed in to the right place). Finally we create a color palette which we use to symbolize the wells in the map.
+```{r message=FALSE, eval = FALSE, echo = TRUE, warning=FALSE}
+centroids <- st_centroid(counties_prj)
+centroids_xy <- st_coordinates(centroids)
+centroids$X <- centroids_xy[,1]
+centroids$Y <- centroids_xy[,2]
+bbox <- st_bbox(Wells_prj)
+well_palette <- c("#FF8500", "#FFE600", "#65E809", "#E81903")
+```
+
+
+##Making Our First Plot
+
+  The code chunk below plots the map below which displays oil and gas well data obtained from the Ohio Department of Natural Resources. These are wells drilled into the Utica Shale and are color coded by their status (as of September 22, 2018). Using the ggplot and sf packages, the data includes wells and U.S. counties, both projected in UTM 17N. The last line of code sets the coordinate limits of the map based on the well data.
+
+```{r fig.cap = "Unconventional Oil and Gas Wells Drilled into the Utica Shale in Eastern Ohio (current as of September 22, 2018)", eval = FALSE, echo=TRUE, warning=FALSE}
+ggplot() + geom_sf(data = counties_prj)+
+  geom_sf(data = Wells_prj, aes(colour=Status, fill = Status))+ 
+  scale_fill_manual(values = well_palette) + scale_color_manual(values = well_palette)+
+  geom_text(data = centroids, aes(x = X, y = Y, label = NAME10),size = 2.5)+
+  xlim(as.integer(bbox$xmin), as.integer(bbox$xmax)) + ylim(as.integer(bbox$ymin), as.integer(bbox$ymax))
+```
+
+
+![](/img/Utica_Wells.png)
+
+
+##Geometries and Thresholds
+  The focus of this research is identifying domestic wells that are at potential risk of contamination from methane migration through the ground.We are working with different geographies, mainly Census Blocks and Buffered areas around oil and gas wells. Since the buffers slice through the Census areas, we'll need to estimate the number of people that live within each Census block and also live within the buffer of the oil/gas well. To accomplish this, we will use the sf package and the intersect function to create new geometries of Census blocks within buffers.
+  
+  
+#This is the end of the document for now, please check back soon to see the progress!
 
 
