@@ -12,5 +12,23 @@
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Carbon Flux Research Update</title>
+      <link>/post/carbon-flux-research-update/</link>
+      <pubDate>Thu, 11 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/carbon-flux-research-update/</guid>
+      <description>Check out our work on Carbon Flux in North Carolina freshwater streams. We are using an eosense carbon flux sensor alongside four Vaisala GMP222 CO2 Sensors to understand the rates at which Carbon leaves freshwater systems in a variety of discharge scenarios. Sensor testing is now complete for the eosense carbon flux sensor, as well as our CO2 Soil Sensors. We are currently preparing the instruments for field deployment (Hopefully mid to late October).</description>
+    </item>
+    
+    <item>
+      <title>Vulnerability to Domestic Wells from Hydraulic Fracturing</title>
+      <link>/post/vulnerability-to-domestic-wells-from-hydraulic-fracturing/</link>
+      <pubDate>Thu, 11 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnerability-to-domestic-wells-from-hydraulic-fracturing/</guid>
+      <description>Update Follow along with my research on understanding domestic wells at risk to effects from methane migration stemming from hydraulic fracturing activity. This living document is being created in the spirit of open and reproducible research. Most of the analysis is done with the R statistical language and is presented exactly as executed. All of the data is free and publicly accessible. This will allow others to reproduce everything exactly, or plug in their own data.</description>
+    </item>
+    
   </channel>
 </rss>

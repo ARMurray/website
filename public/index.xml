@@ -11,6 +11,38 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Carbon Flux Research Update</title>
+      <link>/post/carbon-flux-research-update/</link>
+      <pubDate>Thu, 11 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/carbon-flux-research-update/</guid>
+      <description>&lt;p&gt;Check out our work on Carbon Flux in North Carolina freshwater streams. We are using an &lt;a href=&#34;http://www.eosense.com/products/eosfd/&#34;&gt;eosense carbon flux sensor&lt;/a&gt; alongside four Vaisala GMP222 CO2 Sensors to understand the rates at which Carbon leaves freshwater systems in a variety of discharge scenarios. Sensor testing is now complete for the eosense carbon flux sensor, as well as our CO2 Soil Sensors. We are currently preparing the instruments for field deployment (Hopefully mid to late October). Be sure to check out the &lt;a href=&#34;https://amurraygeo.com/project/carbon-flux/&#34;&gt;living document&lt;/a&gt; where I will be updating the progress of this research.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vulnerability to Domestic Wells from Hydraulic Fracturing</title>
+      <link>/post/vulnerability-to-domestic-wells-from-hydraulic-fracturing/</link>
+      <pubDate>Thu, 11 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnerability-to-domestic-wells-from-hydraulic-fracturing/</guid>
+      <description>&lt;div id=&#34;update&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Update&lt;/h2&gt;
+&lt;p&gt;Follow along with my research on understanding domestic wells at risk to effects from methane migration stemming from hydraulic fracturing activity. &lt;a href=&#34;https://amurraygeo.com/project/domestic-wells-and-fracking/&#34;&gt;This living document&lt;/a&gt; is being created in the spirit of open and reproducible research. Most of the analysis is done with the R statistical language and is presented exactly as executed. All of the data is free and publicly accessible. This will allow others to reproduce everything exactly, or plug in their own data. It also allows others to offer critiques or feedback on the methods.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>AGU Poster</title>
+      <link>/talk/untitled/</link>
+      <pubDate>Mon, 01 Oct 2018 00:00:00 -0400</pubDate>
+      
+      <guid>/talk/untitled/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Deal Me In</title>
       <link>/project/dealmein/</link>
       <pubDate>Fri, 14 Sep 2018 11:39:00 -0400</pubDate>
@@ -20,7 +52,7 @@
     </item>
     
     <item>
-      <title>Domestic Wells and Fracking</title>
+      <title>Domestic Wells and Fracking:</title>
       <link>/project/domestic-wells-and-fracking/</link>
       <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
       
@@ -28,8 +60,8 @@
       <description>&lt;div id=&#34;methane-contamination-of-wells&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Methane Contamination of Wells&lt;/h1&gt;
 &lt;p&gt;In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed.&lt;/p&gt;
-&lt;div id=&#34;this-is-the-working-file-for-my-hydraulic-fracturing-impact-analysis-paper.-upon-its-completion-you-will-find-it-posted-here&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;This is the working file for my hydraulic fracturing impact analysis paper. Upon it’s completion you will find it posted &lt;a href=&#34;https://amurraygeo.com&#34;&gt;here&lt;/a&gt;&lt;/h3&gt;
+&lt;div id=&#34;this-is-the-working-file-for-my-hydraulic-fracturing-impact-analysis-paper.&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;This is the working file for my hydraulic fracturing impact analysis paper.&lt;/h3&gt;
 &lt;/div&gt;
 &lt;div id=&#34;overview&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
@@ -82,10 +114,13 @@ well_palette &amp;lt;- c(&amp;quot;#FF8500&amp;quot;, &amp;quot;#FFE600&amp;quot
 &lt;div id=&#34;geometries-and-thresholds&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Geometries and Thresholds&lt;/h2&gt;
 &lt;p&gt;The focus of this research is identifying domestic wells that are at potential risk of contamination from methane migration through the ground.We are working with different geographies, mainly Census Blocks and Buffered areas around oil and gas wells. Since the buffers slice through the Census areas, we’ll need to estimate the number of people that live within each Census block and also live within the buffer of the oil/gas well. To accomplish this, we will use the sf package and the intersect function to create new geometries of Census blocks within buffers.&lt;/p&gt;
+&lt;div id=&#34;this-is-the-end-of-the-document-for-now-please-check-back-soon-to-see-the-progress&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;This is the end of the document for now, please check back soon to see the progress!&lt;/h3&gt;
+&lt;div id=&#34;last-updated-october-11-2018&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Last Updated: October 11, 2018&lt;/h4&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;this-is-the-end-of-the-document-for-now-please-check-back-soon-to-see-the-progress&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;This is the end of the document for now, please check back soon to see the progress!&lt;/h1&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 </description>
     </item>
@@ -97,16 +132,6 @@ well_palette &amp;lt;- c(&amp;quot;#FF8500&amp;quot;, &amp;quot;#FFE600&amp;quot
       
       <guid>/privacy/</guid>
       <description>&lt;p&gt;&amp;hellip;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>AGU 2018</title>
-      <link>/talk/agu_2018/</link>
-      <pubDate>Mon, 01 Jan 2018 00:00:00 -0500</pubDate>
-      
-      <guid>/talk/agu_2018/</guid>
-      <description>&lt;p&gt;Embed your slides or video here using &lt;a href=&#34;https://sourcethemes.com/academic/post/writing-markdown-latex/&#34; target=&#34;_blank&#34;&gt;shortcodes&lt;/a&gt;. Further details can easily be added using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
 </description>
     </item>
     
@@ -146,23 +171,38 @@ well_palette &amp;lt;- c(&amp;quot;#FF8500&amp;quot;, &amp;quot;#FFE600&amp;quot
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/project/carbon-flux/</guid>
-      <description>&lt;div id=&#34;flux-from-north-carolina-streams&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Flux From North Carolina Streams&lt;/h2&gt;
-&lt;p&gt;The varying rates at which carbon migrates from freshwater streams into the atmosphere is poorly understood. This research aims to understand how carbon flux from freshwater streams to the atmosphere varies depending on variables such as discharge, stream slope, and land use.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00&lt;/code&gt;&lt;/pre&gt;
+      <description>&lt;div id=&#34;what-is-carbon-flux&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is Carbon Flux?&lt;/h2&gt;
+&lt;p&gt;When we refer to the carbon cycle, we are talking about how carbon moves through the different parts of the earth system. Carbon can be transported to and from different parts of the earth system in several different ways such as the burning of fossil fuels, plant respiration, photosynthesis, and soil decomposition to name a few. When we talk about carbon flux we are talking about understanding how much carbon moves between sources and sinks. In this case, we are talking about the flux rate of carbon from water to the atmosphere. We know that when water flows through streams and rivers, it releases carbon into the atmosphere but there is a lot about this that we do not yet understand. For example, we do not know exactly how much carbon is released from flowing rivers and streams. We also do not know if the rate of carbon flux significantly changes depending on the speed or discharge of the river or stream. Our project, which you can read about below, is focused on trying to understand and describe these dynamics within streams and rivers so that we may establish a more detailed knowledge about the global carbon cycle and the rates of carbon moving into the atmosphere from freshwater.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/img/flux_cycle.png&#34; /&gt;
+
 &lt;/div&gt;
-&lt;div id=&#34;including-plots&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Including Plots&lt;/h2&gt;
-&lt;p&gt;You can also embed plots, for example:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/project/carbon-flux_files/figure-html/pressure-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Note that the &lt;code&gt;echo = FALSE&lt;/code&gt; parameter was added to the code chunk to prevent printing of the R code that generated the plot.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;flux-from-north-carolina-streams&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Flux From North Carolina Streams&lt;/h2&gt;
+&lt;p&gt;So, now that we have laid out what we don’t know, we can move on to how we plan to learn about it. Our research aims to understand how carbon flux from freshwater streams to the atmosphere varies depending on variables such as discharge, stream slope, and land use. Our approach is to use two seperate methods by which we can determine how much carbon is leaving a stream over a given amount of time. The first method uses a sensor capable of directly measuring carbon flux. This sensor is designed to measure flux from soil to the atmosphere but we have built a platform for it to be used in a stream. The second method involves using four CO2 sensors which will be spaced out within the stream and submerged underwater. By measuring the decline in CO2 over a known distance within the stream, we should be able to determine CO2 loss to the atmosphere. For both of these methods, we will artificially inject the dstream with CO2 upstream of the sensors. This will allow us to play with changes in CO2 concentrations and the effects on rates and also to negate any small impacts from sediment / plsnt uptake (plants and sediments within the stream can absorb CO2, though the amount of CO2 that would be absorbed relative to the amount of CO2 in the stream would be very small.)&lt;/p&gt;
+&lt;div id=&#34;the-instruments&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;The Instruments&lt;/h3&gt;
+&lt;p&gt;&lt;img src = &#34;/img/instruments.jpg&#34;, width = &#34;400&#34;, height = &#34;400&#34;&gt;&lt;/p&gt;
+&lt;p&gt;We are using a soil CO2 Flux Sensor from eosense in a floating apparatus, custom built to allow for CO2 flux measurements to be taken from a flowing stream. In addition we are using four Vaisala GM222 CO2 sensors to establish in-stream CO2 levels. Using a method published by Johnson et al.(2009) the CO2 sensors are wrapped in special PTFE tubing which allows for the sensor to effectively measure CO2 concentrations without letting water through which could destroy the sensor.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instrument-testing&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Instrument Testing&lt;/h3&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/img/co2testplot.png&#34; alt=&#34;CO2 Measurements from two Vaisala sensors, as well as the eosense flux sensor(red). These tests were taken in our lab with all three sensors directly next to eachother on a table top for the sole purpose of making sure they worked and the data could be handled and visualized.&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;CO2 Measurements from two Vaisala sensors, as well as the eosense flux sensor(red). These tests were taken in our lab with all three sensors directly next to eachother on a table top for the sole purpose of making sure they worked and the data could be handled and visualized.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/img/fluxplot.png&#34; alt=&#34;The blue line represents direct flux readings from the eosense sensor. As expected, there isn’t much of anything occuring as we are not measuring one-way movement (for example: soil to air or water to air)&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;The blue line represents direct flux readings from the eosense sensor. As expected, there isn’t much of anything occuring as we are not measuring one-way movement (for example: soil to air or water to air)&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;font size=&#34;2&#34; color=&#34;grey&#34;&gt;Citations:&lt;br&gt; 1. Johnson, Mark S., et al. “Direct and Continuous Measurement of Dissolved Carbon Dioxide in Freshwater Aquatic Systems-Method and Applications.” Ecohydrology, 2009, doi: 10.1002/eco.95. &lt;br&gt; 2. Ollinger, S.V. and Sallade, S.K. University of New Hampshire‐GLOBE Carbon Cycle Project. 2011. An Introduction to the Global Carbon Cycle: A companion to the GLOBE Carbon Cycle education materials. A co‐publication of the University of New Hampshire and the GLOBE Program Office.&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;more-to-come&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;More to come!&lt;/h2&gt;
+&lt;p&gt;&lt;font size=&#34;2&#34; color=&#34;black&#34;&gt;Last Updated: October 11, 2018 &lt;/font&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
