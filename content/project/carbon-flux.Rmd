@@ -39,6 +39,8 @@ We are using a soil CO2 Flux Sensor from eosense in a floating apparatus, custom
 
 ![The blue line represents direct flux readings from the eosense sensor. As expected, there isn't much of anything occuring as we are not measuring one-way movement (for example: soil to air or water to air)](/img/fluxplot.png)
 
+To learn more about how this data gets from the sensor and into R and prepared for use and analysis, check out my post [here](https://amurraygeo.com/post/formatting-eosense_vaisala/)
+
 
 
 <font size="2" color="grey">Citations:<br>

@@ -1,0 +1,118 @@
+---
+title: Formatting eosense & Vaisala data with R
+author: Andrew
+date: '2018-10-15'
+slug: formatting-eosense_vaisala
+categories:
+  - R
+tags:
+  - carbon
+header:
+  caption: ''
+  image: ''
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+
+##Formatting CO2 Data for Use in R
+<p>In this post I will describe my workflow for formatting CO2 Data for use within R statistical software. CO2 data was collected using two sensors, a Vaisalla GNP-222 and and eosense eosFD Soil CO2 Flux Sensor. While these are the sensors I use, the workflow should be similar regardless of the sensor. The Vaisala collects CO2 readings only. The eosense collects CO2, CO2 Flux, and temperature. CO2 flux refers to the rate at which CO2 is moving between a source and a sink. In the case of this particular sensor, it is typically referring to the rate of CO2 leaving the soil and releasing into the atmosphere.</p>
+<p>Both of these sensors have been wired to send analog data to a data logger, which basically means that for every measurement it is taking, it has two wires going to a data logger (a positive and a negative) and it sends data as a percentage of voltage to the data logger. In the case of the Vaisala, it will sens a voltage between 0 and 1 volts. Whatever voltage it sends can be interpreted as a percentage of the sensors range of measurements. The Vaisala is capable of measuring CO2 concentrations between 0 and 10,000 parts per million (ppm). That means if the voltage the sensor sends out is 1 volt, the ppm it is measuring is at least 10,000 ppm, similaryl if it sends out .4 volts, the measurement it is reading is 400 ppm.</p>
+<p>Campbell Scientific produces the CR1000X which is the datalogger I use. Most campbell scientific data loggers use a program called loggernet which records the data being output from the sensors and converts them into comma seperated value files (CSVs). Here is what the data looks like when it comes from loggernet:
+```{r message=FALSE, echo=FALSE}
+table <- read.table("/Users/Andrew/Downloads/LabTest09192018.csv",header = TRUE, skip = 0, sep = ",")
+head(table)
+```
+
+##Let's Dig Into the Conversion
+Below you will find all of the R code to convert from the csv into usable data dn create a few simple plots to see how the code and the sensors are working. The lines with # at the beginning are annotations of what the code does.
+```{r message=FALSE, echo=TRUE}
+library(ggplot2)
+
+table <- read.table("/Users/Andrew/Downloads/LabTest09192018.csv",header = TRUE, skip = 0, sep = ",")
+colnames(table) <- c('OID','TIMESTAMP','RECORD','CO2_1_avg','CO2_1_Min','CO2_1_Max','CO2_1_TMx','CO2_2_Avg','CO2_2_Max',
+                     'CO2_2_TMx','CO2_2_Min','CO2_2_TMin','EOS_Flux_Avg','EOS_Flux_Max','EOS_Flux_TMx','EOS_Flux_Min',
+                     'EOS_Flux_TMn','EOS_CO2_Avg','EOS_Temp_Avg','BattV_Avg','PTemp_C_Avg','Temp_C_Avg')
+#Convert time to Posixct
+table$time <- as.POSIXct(table$TIMESTAMP)
+
+#Convert Analog outputs to PPM
+table$CO2_1_PPM <- (table$CO2_1_avg / 1000) * 10000
+table$CO2_2_PPM <- (table$CO2_2_Avg / 1000) * 10000
+table$EOS_CO2_PPM <- (table$EOS_CO2_Avg / 5000) * 5000
+table$EOS_tempC <- ((table$EOS_Temp_Avg / 5000) * 70) -20
+
+#Convert Flux to range of -10 to 10 umol m2s1
+table$EOS_Flux_umol <- ((table$EOS_Flux_Avg / 5000) * 20) -10
+
+#Build a plot to visualize variation in CO2 measurements
+
+#Create simplified table with CO2 Measurements by Sensor
+CO2_1 <- data.frame(table$CO2_1_PPM)
+CO2_1$Sensor <- "Sensor 1"
+CO2_1$Time <- as.POSIXct(table$TIMESTAMP)
+colnames(CO2_1) <- c("PPM","Sensor","Time")
+
+CO2_2 <- data.frame(table$CO2_2_PPM)
+CO2_2$Sensor <- "Sensor 2"
+CO2_2$Time <- as.POSIXct(table$TIMESTAMP)
+colnames(CO2_2) <- c("PPM","Sensor","Time")
+
+EOS_CO2 <- data.frame(table$EOS_CO2_PPM)
+EOS_CO2$Sensor <- "EOS Sensor"
+EOS_CO2$Time <- as.POSIXct(table$TIMESTAMP)
+colnames(EOS_CO2) <- c("PPM","Sensor", "Time")
+
+CO2_All <- rbind(CO2_1,CO2_2,EOS_CO2)
+
+#Simple CO2 plot with lines
+
+lines <- ggplot(CO2_All, aes(x=Time, y=PPM, group=Sensor, colour = Sensor))+geom_line()+
+  ggtitle("Lab Test of Multiple CO2 Sensors")+
+  theme(axis.text.y = element_text(size = 14),
+        axis.title.y = element_text(size=18),
+        axis.text.x = element_text(size = 14),
+        axis.title.x = element_text(size=18),
+        plot.title = element_text(size=20))
+lines
+
+#CO2 Flux Plot
+flux <- data.frame(as.POSIXct(table$TIMESTAMP))
+flux$flux <- table$EOS_Flux_umol
+colnames(flux) <- c('time','flux')
+
+flux_lines <- ggplot(flux, aes(x=time, y=flux, group=1))+geom_line(colour = '#4B9CD3')+
+  ggtitle("Lab Test of Flux Sensor")+
+  ylab(expression(mu ~ moles ~ m^{-2} ~ s^{-1}))+
+  theme(axis.text.y = element_text(size = 14),
+        axis.title.y = element_text(size=18),
+        axis.text.x = element_text(size = 14),
+        axis.title.x = element_text(size=18),
+        plot.title = element_text(size=20))
+flux_lines
+
+#Temperature Plot
+EOS_temp <- data.frame(table$EOS_tempC)
+EOS_temp$sensor <- "EOS"
+colnames(EOS_temp) <- c('Temp','Sensor')
+
+Amb_temp <- data.frame(table$Temp_C_Avg)
+Amb_temp$sensor <- "Thermocouple"
+colnames(Amb_temp) <- c('Temp','Sensor')
+
+Log_temp <-  data.frame(table$PTemp_C_Avg)
+Log_temp$sensor <- "Data Logger Internal"
+colnames(Log_temp) <- c('Temp','Sensor')
+
+temp <- rbind(EOS_temp,Amb_temp,Log_temp)
+temp$time <- as.POSIXct(table$TIMESTAMP)
+
+temp_lines <- ggplot(temp, aes(x=time, y=Temp, group=Sensor, colour = Sensor))+geom_line()+
+  ggtitle("Lab Test of Multiple Temp Sensors")
+temp_lines
+
+```
+

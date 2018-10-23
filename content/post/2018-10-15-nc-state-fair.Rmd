@@ -1,0 +1,90 @@
+---
+title: NC State Fair
+author: Andrew
+date: '2018-10-15'
+slug: nc-state-fair
+categories:
+  - R
+tags:
+  - Just For Fun
+header:
+  caption: ''
+  image: ''
+---
+
+##NC State Fair Attendance
+<p>Check out this interactive plot on NC State Fair Attendance by day of the fair and colored by year. I have been playing around with plotly visualizations and in the spirit of the North Carolina State Fair, wanted to show how the attendance changes by day of the fair and through the years. The code I used to create this plot can be found below.</p>
+
+```{r-plot, echo=FALSE, message=FALSE}
+library(ggplot2)
+library(tidyr)
+library(plotly)
+library(scales)
+
+attendance <- read.csv('/Users/Andrew/Documents/fair.csv')
+colnames(attendance) <- c('Year','Thu','Fri','Sat','Sun','Mon','Tue',
+                          'Wed','Thu2','Fri2','Sat2','Sun2','Total')
+daily <- select(attendance,Year,Thu,Fri,Sat,Sun,Mon,Tue,Wed,Thu2,Fri2,Sat2,Sun2)
+
+long_tbl <- gather(daily,Day, Attendance, -Year)%>%
+  arrange()
+
+mid <- mean(long_tbl$Year)
+
+plot <- ggplot(data = long_tbl, 
+               aes(text = Year, People = Attendance, 
+                   x=factor(Day, c('Thu','Fri','Sat','Sun','Mon','Tue',
+                                   'Wed','Thu2','Fri2','Sat2','Sun2')),
+                                    y=Attendance, group=Year, color = Year))+
+  geom_line(size=.3)+
+  scale_color_gradient2(midpoint=mid, low="green", mid="blue", high="red", space ="Lab" )+
+  xlab("Day")+
+  scale_y_continuous(labels = comma)+
+  geom_point()+
+  ggtitle("North Carolina State Fair Attendance", subtitle = "1986 - 2017")
+
+ggplotly(p=plot, tooltip = c("text","People"))
+```
+
+##Code:
+I use the tidyr package to manipulate the data into a long format, the ggplot2 package to create a plot, and the plotly package to make the plot interactive. The scales package is there to let me use labels = comma which puts thousands seperators into the y-axis so it's unnecesarry but it looks better.
+
+```{r-code, echo=TRUE, message=FALSE}
+library(ggplot2)
+library(tidyr)
+library(plotly)
+library(scales)
+
+#Read the data from the csv
+attendance <- read.csv('/Users/Andrew/Documents/fair.csv')
+#Rename the columns so they have days that make sense
+colnames(attendance) <- c('Year','Thu','Fri','Sat','Sun','Mon','Tue',
+                          'Wed','Thu2','Fri2','Sat2','Sun2','Total')
+#Keep only the columns we want to use for our plot
+daily <- select(attendance,Year,Thu,Fri,Sat,Sun,Mon,Tue,Wed,Thu2,Fri2,Sat2,Sun2)
+
+#Use tidyr to convert the data from a wide to a long format and arrange it by day
+long_tbl <- gather(daily,Day, Attendance, -Year)%>%
+  arrange()
+
+#create an object called mid which is simply the average year. This will be used for the color pallete in the plot
+mid <- mean(long_tbl$Year)
+
+#Using ggplot, make a plot of the attendance data.The x=factor line creates a list of days which will be used to label the
+#X axis. if we don't do this, the days will be listed in alphabetical order which makes no sense.
+plot <- ggplot(data = long_tbl, 
+               aes(text = Year, People = Attendance, 
+                   x=factor(Day, c('Thu','Fri','Sat','Sun','Mon','Tue',
+                                   'Wed','Thu2','Fri2','Sat2','Sun2')),
+                                    y=Attendance, group=Year, color = Year))+
+  geom_line(size=.3)+
+  scale_color_gradient2(midpoint=mid, low="green", mid="blue", high="red", space ="Lab" )+
+  xlab("Day")+
+  scale_y_continuous(labels = comma)+
+  geom_point()+
+  ggtitle("North Carolina State Fair Attendance", subtitle = "1986 - 2017")
+
+
+#Convert the ggplot to an interactive plot with plotly
+plot <- ggplotly(p=plot, tooltip = c("text","People"))
+```
