@@ -158,6 +158,13 @@
     
     <url>
     
+      <loc>/project/deal-me-in/</loc>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>/tags/fracking/</loc>
       <lastmod>2018-10-11T00:00:00+00:00</lastmod>
       <priority>0</priority>
@@ -203,8 +210,24 @@
     
     <url>
     
+      <loc>/tags/r/</loc>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>/categories/r/</loc>
       <lastmod>2018-10-15T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/r-shiny/</loc>
       <priority>0</priority>
     </url>
     
