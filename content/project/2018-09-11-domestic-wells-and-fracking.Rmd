@@ -1,5 +1,5 @@
 ---
-title: "Domestic Wells and Fracking:"
+title: 'Domestic Wells and Fracking:'
 author: "Andrew"
 date: '2018-09-11'
 header:
@@ -32,7 +32,7 @@ In recent years, the practice of hydraulic fracturing has raised concerns among 
 
 #Data Preparation
 ##Libraries
-First we'll load the packages we need for our analysis:
+First we'll load the packages we need for our analysis. Simple Features (sf) is a package that will give us tools to work with geometries and spatial objects. The dplyr package provides tools for data management, and ggplot lets us visualize the data in a variety of ways.
 ```{r message=FALSE, echo = TRUE, warning=FALSE}
 library(sf)
 library(dplyr)
@@ -40,20 +40,27 @@ library(ggplot2)
 ```
 
 ##Read in the Data
-Next, we'll read in the data. Our data here is all in the NAD83 coordinate system and is unprojected, so we use the crs '4269' which is NAD83 and import the shapefiles and csv and create sf objects. Then we project all of the data to UTM zone 17N which encompasses eastern Ohio.
-```{r message=FALSE, eval = FALSE, echo = TRUE, warning=FALSE, results='hide'}
-blocks <- st_read('Blocks_5mi_Utica_NAD83.shp', crs = 4269)
+Next, we'll read in the data. Our data here is all in the NAD83 coordinate system and is unprojected, so we use the crs '4269' which is NAD83 and import the shapefiles and csv and create sf objects. Then we project all of the data to UTM zone 17N which encompasses eastern Ohio. the sf package is pretty good about automatically rechognizing the projection if a shapefile it's importing, so we don't necesarrily need to provide the 'crs = 4269' argument. The oil/gas well data in this case is in a csv so the crs must be provided, and the csv must be converted to a sf object to give it spatial attributes.
+```{r message=FALSE, eval = TRUE, echo = TRUE, warning=FALSE, results='hide'}
+# Read and project blocks
+blocks <- st_read('~/Documents/R_Geometry/Blocks_5mi_Utica_NAD83.shp', crs = 4269)
 blocks_prj <-  st_transform(blocks, 2958)
-Wells <- read.csv('Downloaded/Utica_092218.csv')
+
+# Read csv of well pads, convert to a simple features object and project
+Wells <- read.csv('~/Documents/R_Geometry/Downloaded/Utica_092218.csv')
 Wells_sf <- st_as_sf(Wells, coords = c("Surf_Lon","Surf_Lat"), crs = 4269)
 Wells_prj <- st_transform(Wells_sf, 2958)
-counties <- st_read('counties_NAD83.shp', crs = 4269)
+
+# Read and project counties
+counties <- st_read('~/Documents/R_Geometry/counties_NAD83.shp', crs = 4269)
 counties_prj <- st_transform(counties, 2958)
 ```
 
 ##Setting Up Data to Plot
 We need to create centroids from the county layer so that we can use them to add text labels to the map. We do this by getting the coordinates of the centroids using st_centroid and then separating the x and y coordinates and putting them into a new sf object. Also here, we create a new object that gets the bounding box of the oil/gas wells. We'll use this to create the extent of our map (so it is zoomed in to the right place). Finally we create a color palette which we use to symbolize the wells in the map.
-```{r message=FALSE, eval = FALSE, echo = TRUE, warning=FALSE}
+
+
+```{r message=FALSE, eval = TRUE, echo = TRUE, warning=FALSE}
 centroids <- st_centroid(counties_prj)
 centroids_xy <- st_coordinates(centroids)
 centroids$X <- centroids_xy[,1]
@@ -65,9 +72,9 @@ well_palette <- c("#FF8500", "#FFE600", "#65E809", "#E81903")
 
 ##Making Our First Plot
 
-  The code chunk below plots the map below which displays oil and gas well data obtained from the Ohio Department of Natural Resources. These are wells drilled into the Utica Shale and are color coded by their status (as of September 22, 2018). Using the ggplot and sf packages, the data includes wells and U.S. counties, both projected in UTM 17N. The last line of code sets the coordinate limits of the map based on the well data.
+The code chunk below plots the map below which displays oil and gas well data obtained from the Ohio Department of Natural Resources. These are wells drilled into the Utica Shale and are color coded by their status (as of September 22, 2018). Using the ggplot and sf packages, the data includes wells and U.S. counties, both projected in UTM 17N. The last line of code sets the coordinate limits of the map based on the well data.
 
-```{r fig.cap = "Unconventional Oil and Gas Wells Drilled into the Utica Shale in Eastern Ohio (current as of September 22, 2018)", eval = FALSE, echo=TRUE, warning=FALSE}
+```{r fig.cap = "Unconventional Oil and Gas Wells Drilled into the Utica Shale in Eastern Ohio (current as of September 22, 2018)", eval = TRUE, echo=TRUE, warning=FALSE}
 ggplot() + geom_sf(data = counties_prj)+
   geom_sf(data = Wells_prj, aes(colour=Status, fill = Status))+ 
   scale_fill_manual(values = well_palette) + scale_color_manual(values = well_palette)+
@@ -76,15 +83,90 @@ ggplot() + geom_sf(data = counties_prj)+
 ```
 
 
-![](/img/Utica_Wells.png)
-
-
 ##Geometries and Thresholds
-  The focus of this research is identifying domestic wells that are at potential risk of contamination from methane migration through the ground.We are working with different geographies, mainly Census Blocks and Buffered areas around oil and gas wells. Since the buffers slice through the Census areas, we'll need to estimate the number of people that live within each Census block and also live within the buffer of the oil/gas well. To accomplish this, we will use the sf package and the intersect function to create new geometries of Census blocks within buffers.
+  The focus of this research is identifying domestic wells that are at potential risk of contamination from methane migration through the ground.We are working with different geographies, mainly Census Blocks and Buffered areas around oil and gas wells. Since the buffers slice through the Census areas, we'll need to estimate the number of people that live within each Census block and also live within the buffer of the oil/gas well. To accomplish this, we will use the sf package and the intersection function to create new geometries of Census blocks within buffers. We will use area to weight well estimates into the newly created areas and then add them together for each oil/gas well.
+
+For this example, I import new data which is a subset of the database of oil and gas wells shown above. Using the st_buffer function from the sf package, buffers are created around the well pads. A plot is then created to visualize the relationship between the well pad, the buffer and the census blocks.
+
+```{r fig.cap= "The numbers show the estimated number of wells within each Census block. There are a total of 75 estimated wells in these blocks. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads.", message=FALSE, eval = TRUE, echo = TRUE, warning=FALSE}
+
+# The goal here is to iterate through the well pads and determine
+# the areas of blocks that are at risk of contamination and to weight
+# estimated well use into those areas so we can come up with a total
+# number of wells at risk from each well pad
+
+# First, lets import the well pad and the block data and then project them to
+# a projection that is good for our working area.
+pads <- st_read("~/Documents/Fracking/shapefiles/OH_Well.shp")
+blocks <- st_read("~/Documents/Fracking/shapefiles/OH_Blocks_Sub.shp")
+
+# Project data
+pads <- st_transform(pads,3158)
+blocks <- st_transform(blocks, 3158)
+
+# Add some data to the Census Blocks
+# blocks$
+
+# Create buffers around the well pads of 1,000 km
+buf <- st_buffer(pads, 1000)
+blk_pts <- st_centroid(blocks)
+
+# This plot shows a group of Census blocks with estimated numbers of wells within each one.
+# The buffer shown with the circle is 1 km from the fracking operation. #In order to estimate
+# the number of wells within the buffer, we need to use area to weight the number of wells within
+# each intersecting census block that are likely to also be within the 1 km buffer
+p1 <- ggplot()+
+  geom_sf(data = blocks)+
+  geom_sf(data = buf, fill = NA, color = 'black', size = 2)+
+  geom_sf(data = pads, size = 5, pch = 17, col = 'red')+
+  geom_sf_label(data = blk_pts, mapping = aes(label = as.integer(Hybd_Blk_W)))+
+  xlab("")+ylab("")
+
+p1
+```
+
+
+Now we need to create the new geometries and do the math. In the following loop, we will iterate through every oil/gas well to create buffers. Thos buffers will be intersected with the census blocks to create new areas. The reason we need to iterate through one gas well at a time is because if another gas well exists within the buffer distance, they will overlap and conflict with eachothers geometries, giving us bad results.
+```{r fig.cap="The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally there were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer.", message=FALSE, eval = TRUE, echo = TRUE, warning=FALSE}
+#Create an empty data frame that the rsults will be written to
+outdf <- data.frame()
+
+#This loop will run once for every record
+for (r in 1:nrow(pads)){
+  row <- pads[r,] # gets the row as an object
+  buffer <- st_buffer(row, 1000) # creates a buffer
+  intersects <- st_intersection(blocks,buffer) # intersects the buffer with the blocks and creates new sf object
+  intersects$NewArea <- st_area(intersects) # calculates area of the newly created shapes
+  intersects$wells <- intersects$Hybd_Blk_W * (intersects$NewArea / intersects$Shape_Area) # calculates what percentage of the original Census block the new area is and multiplies it by estimated wells
+  wells <- sum(intersects$wells) # sums the estimated wells within the vuffer area of the well pad
+  new <- data.frame("API_Number"=row$API,"Est_Wells"=wells) # creates a new record to add to the results table
+  outdf <- rbind(outdf,new) # writes the record to the results table
+}
+
+# Make pts based on centroids to display the number of wells in a plot
+# NOTE: This will only pull information from the last iteration of the for loop above
+# and will not include all of the well pads/blocks
+pts <- st_centroid(intersects)
+coords <- as.data.frame(st_coordinates(pts))
+pts$X <- coords['X']
+pts$Y <- coords['Y']
+
+# Create a plot showing the estimated number of wells within each part of each 
+# block that intersects the buffer area around the oil/gas well  
+p2 <- ggplot()+
+  geom_sf(data = intersects, size = 1.5)+
+  geom_sf(data = row, size = 5, pch = 17, col = 'red')+
+  geom_sf_label(data = pts, mapping = aes(label=as.integer(wells)))+
+  xlab("")+ylab("")
+  
+p2
+
+```
+
   
   
   
 ###This is the end of the document for now, please check back soon to see the progress!
-####Last Updated: October 11, 2018
+####Last Updated: October 28, 2018
 
 
