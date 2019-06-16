@@ -1,15 +1,13 @@
 ---
-title: NC State Fair
-author: Andrew
+title: "NC State Fair"
+author: "Andrew"
 date: '2018-10-15'
-slug: nc-state-fair
-categories:
-  - R
-tags:
-  - Just For Fun
 header:
   caption: ''
   image: ''
+slug: nc-state-fair
+tags: Just For Fun
+categories: R
 ---
 
 ##NC State Fair Attendance
@@ -20,8 +18,9 @@ library(ggplot2)
 library(tidyr)
 library(plotly)
 library(scales)
+library(here)
 
-attendance <- read.csv('D:/OneDrive/OneDrive - University of North Carolina at Chapel Hill/website/data/fair.csv')
+attendance <- read.csv(here("data","fair.csv"))
 colnames(attendance) <- c('Year','Thu','Fri','Sat','Sun','Mon','Tue',
                           'Wed','Thu2','Fri2','Sat2','Sun2','Total')
 daily <- select(attendance,Year,Thu,Fri,Sat,Sun,Mon,Tue,Wed,Thu2,Fri2,Sat2,Sun2)
@@ -56,7 +55,7 @@ library(plotly)
 library(scales)
 
 #Read the data from the csv
-attendance <- read.csv('D:/OneDrive/OneDrive - University of North Carolina at Chapel Hill/website/data/fair.csv')
+attendance <- read.csv(here("data","fair.csv"))
 #Rename the columns so they have days that make sense
 colnames(attendance) <- c('Year','Thu','Fri','Sat','Sun','Mon','Tue',
                           'Wed','Thu2','Fri2','Sat2','Sun2','Total')
