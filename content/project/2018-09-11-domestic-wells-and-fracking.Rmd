@@ -4,7 +4,7 @@ author: "Andrew"
 date: '2018-09-11'
 header:
   caption: ''
-  image: Utica_wide.png
+  image: AGU_Poster.png
 image_preview: well.jpg
 slug: domestic-wells-and-fracking
 tags:
@@ -167,6 +167,6 @@ p2
   
   
 ###This is the end of the document for now, please check back soon to see the progress!
-####Last Updated: October 28, 2018
+####Last Updated: December 10, 2018
 
 

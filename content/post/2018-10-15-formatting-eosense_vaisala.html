@@ -65,7 +65,7 @@ Both of these sensors have been wired to send analog data to a data logger, whic
 <p>Below you will find all of the R code to convert from the csv into usable data dn create a few simple plots to see how the code and the sensors are working. The lines with # at the beginning are annotations of what the code does.</p>
 <pre class="r"><code>library(ggplot2)
 
-table &lt;- read.table(&quot;/Users/Andrew/Downloads/LabTest09192018.csv&quot;,header = TRUE, skip = 0, sep = &quot;,&quot;)
+table &lt;- read.table(&quot;/Users/Andrew/Documents/carbon/LabTest09192018.csv&quot;,header = TRUE, skip = 0, sep = &quot;,&quot;)
 colnames(table) &lt;- c(&#39;OID&#39;,&#39;TIMESTAMP&#39;,&#39;RECORD&#39;,&#39;CO2_1_avg&#39;,&#39;CO2_1_Min&#39;,&#39;CO2_1_Max&#39;,&#39;CO2_1_TMx&#39;,&#39;CO2_2_Avg&#39;,&#39;CO2_2_Max&#39;,
                      &#39;CO2_2_TMx&#39;,&#39;CO2_2_Min&#39;,&#39;CO2_2_TMin&#39;,&#39;EOS_Flux_Avg&#39;,&#39;EOS_Flux_Max&#39;,&#39;EOS_Flux_TMx&#39;,&#39;EOS_Flux_Min&#39;,
                      &#39;EOS_Flux_TMn&#39;,&#39;EOS_CO2_Avg&#39;,&#39;EOS_Temp_Avg&#39;,&#39;BattV_Avg&#39;,&#39;PTemp_C_Avg&#39;,&#39;Temp_C_Avg&#39;)

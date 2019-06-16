@@ -106,7 +106,7 @@
   <meta property="og:site_name" content="Andrew Murray">
   <meta property="og:url" content="/project/domestic-wells-and-fracking/">
   <meta property="og:title" content="Domestic Wells and Fracking: | Andrew Murray">
-  <meta property="og:description" content="Methane Contamination of Wells In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed."><meta property="og:image" content="/img/Utica_wide.png">
+  <meta property="og:description" content="Methane Contamination of Wells In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed."><meta property="og:image" content="/img/AGU_Poster.png">
   <meta property="og:locale" content="en-us">
   
   <meta property="article:published_time" content="2018-09-11T00:00:00&#43;00:00">
@@ -277,7 +277,7 @@
 <div class="article-header">
   
   
-    <img src="/img/Utica_wide.png" class="article-banner" itemprop="image">
+    <img src="/img/AGU_Poster.png" class="article-banner" itemprop="image">
   
 
   
@@ -452,9 +452,9 @@ p1 &lt;- ggplot()+
 
 p1</code></pre>
 <div class="figure"><span id="fig:unnamed-chunk-5"></span>
-<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-5-1.png" alt="The numbers show the estimated number of wells within each Census block. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads." width="672" />
+<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-5-1.png" alt="The numbers show the estimated number of wells within each Census block. There are a total of 75 estimated wells in these blocks. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads." width="672" />
 <p class="caption">
-Figure 2: The numbers show the estimated number of wells within each Census block. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads.
+Figure 2: The numbers show the estimated number of wells within each Census block. There are a total of 75 estimated wells in these blocks. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads.
 </p>
 </div>
 <p>Now we need to create the new geometries and do the math. In the following loop, we will iterate through every oil/gas well to create buffers. Thos buffers will be intersected with the census blocks to create new areas. The reason we need to iterate through one gas well at a time is because if another gas well exists within the buffer distance, they will overlap and conflict with eachothers geometries, giving us bad results.</p>
@@ -491,15 +491,15 @@ p2 &lt;- ggplot()+
   
 p2</code></pre>
 <div class="figure"><span id="fig:unnamed-chunk-6"></span>
-<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-6-1.png" alt="The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally theree were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer." width="672" />
+<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-6-1.png" alt="The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally there were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer." width="672" />
 <p class="caption">
-Figure 3: The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally theree were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer.
+Figure 3: The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally there were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer.
 </p>
 </div>
 <div id="this-is-the-end-of-the-document-for-now-please-check-back-soon-to-see-the-progress" class="section level3">
 <h3>This is the end of the document for now, please check back soon to see the progress!</h3>
-<div id="last-updated-october-28-2018" class="section level4">
-<h4>Last Updated: October 28, 2018</h4>
+<div id="last-updated-december-10-2018" class="section level4">
+<h4>Last Updated: December 10, 2018</h4>
 </div>
 </div>
 </div>

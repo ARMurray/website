@@ -4,7 +4,7 @@ author: "Andrew"
 date: '2018-09-11'
 header:
   caption: ''
-  image: Utica_wide.png
+  image: AGU_Poster.png
 image_preview: well.jpg
 slug: domestic-wells-and-fracking
 tags:
@@ -130,9 +130,9 @@ p1 &lt;- ggplot()+
 
 p1</code></pre>
 <div class="figure"><span id="fig:unnamed-chunk-5"></span>
-<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-5-1.png" alt="The numbers show the estimated number of wells within each Census block. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads." width="672" />
+<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-5-1.png" alt="The numbers show the estimated number of wells within each Census block. There are a total of 75 estimated wells in these blocks. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads." width="672" />
 <p class="caption">
-Figure 2: The numbers show the estimated number of wells within each Census block. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads.
+Figure 2: The numbers show the estimated number of wells within each Census block. There are a total of 75 estimated wells in these blocks. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads.
 </p>
 </div>
 <p>Now we need to create the new geometries and do the math. In the following loop, we will iterate through every oil/gas well to create buffers. Thos buffers will be intersected with the census blocks to create new areas. The reason we need to iterate through one gas well at a time is because if another gas well exists within the buffer distance, they will overlap and conflict with eachothers geometries, giving us bad results.</p>
@@ -169,15 +169,15 @@ p2 &lt;- ggplot()+
   
 p2</code></pre>
 <div class="figure"><span id="fig:unnamed-chunk-6"></span>
-<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-6-1.png" alt="The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally theree were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer." width="672" />
+<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-6-1.png" alt="The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally there were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer." width="672" />
 <p class="caption">
-Figure 3: The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally theree were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer.
+Figure 3: The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally there were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer.
 </p>
 </div>
 <div id="this-is-the-end-of-the-document-for-now-please-check-back-soon-to-see-the-progress" class="section level3">
 <h3>This is the end of the document for now, please check back soon to see the progress!</h3>
-<div id="last-updated-october-28-2018" class="section level4">
-<h4>Last Updated: October 28, 2018</h4>
+<div id="last-updated-december-10-2018" class="section level4">
+<h4>Last Updated: December 10, 2018</h4>
 </div>
 </div>
 </div>

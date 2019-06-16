@@ -39,16 +39,5 @@
       <description>What is Carbon Flux? When we refer to the carbon cycle, we are talking about how carbon moves through the different parts of the earth system. Carbon can be transported to and from different parts of the earth system in several different ways such as the burning of fossil fuels, plant respiration, photosynthesis, and soil decomposition to name a few. When we talk about carbon flux we are talking about understanding how much carbon moves between sources and sinks.</description>
     </item>
     
-    <item>
-      <title>Deal Me In</title>
-      <link>/project/deal-me-in/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/project/deal-me-in/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
- </description>
-    </item>
-    
   </channel>
 </rss>

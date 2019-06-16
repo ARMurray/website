@@ -33,7 +33,7 @@ weight = 5
  
 +++
 
-# Biography
+# Bio
 
 I am a PhD student in the [Carbonshed lab] (http://diegori.web.unc.edu/) at the University of North Carolina - Chapel Hill working
 under the advisement of Dr. Diego Riveros-Iregui. My research interests focus on surface-groundwater interactions

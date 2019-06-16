@@ -4,6 +4,14 @@
     
     <url>
     
+      <loc>/post/climate-extremes-crop-yields/</loc>
+      <lastmod>2019-04-01T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>/post/formatting-eosense_vaisala/</loc>
       <lastmod>2018-10-15T00:00:00+00:00</lastmod>
     </url>
@@ -134,15 +142,6 @@
     
     <url>
     
-      <loc>/tags/carbon/</loc>
-      <lastmod>2018-10-15T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
       <loc>/project/carbon-flux/</loc>
     </url>
     
@@ -158,33 +157,8 @@
     
     <url>
     
-      <loc>/project/deal-me-in/</loc>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/tags/fracking/</loc>
-      <lastmod>2018-10-11T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
       <loc>/tags/just-for-fun/</loc>
       <lastmod>2018-10-15T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/tags/methane/</loc>
-      <lastmod>2018-10-11T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -210,33 +184,8 @@
     
     <url>
     
-      <loc>/tags/r/</loc>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
       <loc>/categories/r/</loc>
-      <lastmod>2018-10-15T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/tags/r-shiny/</loc>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/tags/shiny/</loc>
-      <lastmod>2018-09-14T11:39:00-04:00</lastmod>
+      <lastmod>2019-04-01T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -246,6 +195,51 @@
     
       <loc>/tags/</loc>
       <lastmod>2018-10-15T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/carbon/</loc>
+      <lastmod>2018-10-15T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/climate/</loc>
+      <lastmod>2019-04-01T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/fracking/</loc>
+      <lastmod>2018-10-11T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/methane/</loc>
+      <lastmod>2018-10-11T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/shiny/</loc>
+      <lastmod>2018-09-14T11:39:00-04:00</lastmod>
       <priority>0</priority>
     </url>
     

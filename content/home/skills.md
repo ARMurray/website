@@ -38,5 +38,15 @@ weight = 7
   icon_pack = "fas"
   name = "Remote Sensing"
   description = "ENVI"
+  
+[[feature]]
+  icon = "python"
+  icon_pack = "fab"
+  name = "Python"
+  
+[[feature]]
+  icon = "github"
+  icon_pack = "fab"
+  name = "Github"
 
 +++
