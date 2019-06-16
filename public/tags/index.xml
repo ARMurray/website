@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Tue, 11 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,25 +15,43 @@
     <item>
       <title>Carbon</title>
       <link>/tags/carbon/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/carbon/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Climate</title>
+      <link>/tags/climate/</link>
+      <pubDate>Mon, 01 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/climate/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Fracking</title>
       <link>/tags/fracking/</link>
-      <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 11 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/fracking/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Just For Fun</title>
+      <link>/tags/just-for-fun/</link>
+      <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/just-for-fun/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Methane</title>
       <link>/tags/methane/</link>
-      <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 11 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/methane/</guid>
       <description></description>
@@ -51,7 +69,7 @@
     <item>
       <title>Wells</title>
       <link>/tags/wells/</link>
-      <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 11 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/wells/</guid>
       <description></description>

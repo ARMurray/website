@@ -7,13 +7,40 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Tue, 11 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Domestic Wells and Fracking</title>
+      <title>The Impact of Climate Extremes on Crop Yields in the Southeastern United States</title>
+      <link>/post/climate-extremes-crop-yields/</link>
+      <pubDate>Mon, 01 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/climate-extremes-crop-yields/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Formatting eosense &amp; Vaisala data with R</title>
+      <link>/post/formatting-eosense_vaisala/</link>
+      <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/formatting-eosense_vaisala/</guid>
+      <description>Formatting CO2 Data for Use in R  In this post I will describe my workflow for formatting CO2 Data for use within R statistical software. CO2 data was collected using two sensors, a Vaisalla GNP-222 and and eosense eosFD Soil CO2 Flux Sensor. While these are the sensors I use, the workflow should be similar regardless of the sensor. The Vaisala collects CO2 readings only. The eosense collects CO2, CO2 Flux, and temperature.</description>
+    </item>
+    
+    <item>
+      <title>NC State Fair</title>
+      <link>/post/nc-state-fair/</link>
+      <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/nc-state-fair/</guid>
+      <description>NC State Fair Attendance  Check out this interactive plot on NC State Fair Attendance by day of the fair and colored by year. I have been playing around with plotly visualizations and in the spirit of the North Carolina State Fair, wanted to show how the attendance changes by day of the fair and through the years. The code I used to create this plot can be found below.</description>
+    </item>
+    
+    <item>
+      <title>Domestic Wells and Fracking:</title>
       <link>/project/domestic-wells-and-fracking/</link>
       <pubDate>Tue, 11 Sep 2018 00:00:00 +0000</pubDate>
       
@@ -27,8 +54,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/project/carbon-flux/</guid>
-      <description>Flux From North Carolina Streams The varying rates at which carbon migrates from freshwater streams into the atmosphere is poorly understood. This research aims to understand how carbon flux from freshwater streams to the atmosphere varies depending on variables such as discharge, stream slope, and land use.
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.</description>
+      <description>What is Carbon Flux? When we refer to the carbon cycle, we are talking about how carbon moves through the different parts of the earth system. Carbon can be transported to and from different parts of the earth system in several different ways such as the burning of fossil fuels, plant respiration, photosynthesis, and soil decomposition to name a few. When we talk about carbon flux we are talking about understanding how much carbon moves between sources and sinks.</description>
     </item>
     
   </channel>

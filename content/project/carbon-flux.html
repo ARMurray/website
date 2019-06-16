@@ -1,0 +1,51 @@
+---
+title: "Carbon Flux"
+author: "Andrew"
+date: "9/11/2018"
+image_preview: instruments_crop.jpg
+header:
+  caption: ''
+  image: instruments.jpg
+slug: carbon-flux
+tags:
+- carbon
+categories: R
+output: html_document
+---
+
+
+
+<div id="what-is-carbon-flux" class="section level2">
+<h2>What is Carbon Flux?</h2>
+<p>When we refer to the carbon cycle, we are talking about how carbon moves through the different parts of the earth system. Carbon can be transported to and from different parts of the earth system in several different ways such as the burning of fossil fuels, plant respiration, photosynthesis, and soil decomposition to name a few. When we talk about carbon flux we are talking about understanding how much carbon moves between sources and sinks. In this case, we are talking about the flux rate of carbon from water to the atmosphere. We know that when water flows through streams and rivers, it releases carbon into the atmosphere but there is a lot about this that we do not yet understand. For example, we do not know exactly how much carbon is released from flowing rivers and streams. We also do not know if the rate of carbon flux significantly changes depending on the speed or discharge of the river or stream. Our project, which you can read about below, is focused on trying to understand and describe these dynamics within streams and rivers so that we may establish a more detailed knowledge about the global carbon cycle and the rates of carbon moving into the atmosphere from freshwater.</p>
+<div class="figure">
+<img src="/img/flux_cycle.png" />
+
+</div>
+</div>
+<div id="flux-from-north-carolina-streams" class="section level2">
+<h2>Flux From North Carolina Streams</h2>
+<p>So, now that we have laid out what we don’t know, we can move on to how we plan to learn about it. Our research aims to understand how carbon flux from freshwater streams to the atmosphere varies depending on variables such as discharge, stream slope, and land use. Our approach is to use two seperate methods by which we can determine how much carbon is leaving a stream over a given amount of time. The first method uses a sensor capable of directly measuring carbon flux. This sensor is designed to measure flux from soil to the atmosphere but we have built a platform for it to be used in a stream. The second method involves using four CO2 sensors which will be spaced out within the stream and submerged underwater. By measuring the decline in CO2 over a known distance within the stream, we should be able to determine CO2 loss to the atmosphere. For both of these methods, we will artificially inject the dstream with CO2 upstream of the sensors. This will allow us to play with changes in CO2 concentrations and the effects on rates and also to negate any small impacts from sediment / plsnt uptake (plants and sediments within the stream can absorb CO2, though the amount of CO2 that would be absorbed relative to the amount of CO2 in the stream would be very small.)</p>
+<div id="the-instruments" class="section level3">
+<h3>The Instruments</h3>
+<p><img src = "/img/instruments.jpg", width = "400", height = "400"></p>
+<p>We are using a soil CO2 Flux Sensor from eosense in a floating apparatus, custom built to allow for CO2 flux measurements to be taken from a flowing stream. In addition we are using four Vaisala GM222 CO2 sensors to establish in-stream CO2 levels. Using a method published by Johnson et al.(2009) the CO2 sensors are wrapped in special PTFE tubing which allows for the sensor to effectively measure CO2 concentrations without letting water through which could destroy the sensor.</p>
+</div>
+<div id="instrument-testing" class="section level3">
+<h3>Instrument Testing</h3>
+<div class="figure">
+<img src="/img/co2testplot.png" alt="CO2 Measurements from two Vaisala sensors, as well as the eosense flux sensor(red). These tests were taken in our lab with all three sensors directly next to eachother on a table top for the sole purpose of making sure they worked and the data could be handled and visualized." />
+<p class="caption">CO2 Measurements from two Vaisala sensors, as well as the eosense flux sensor(red). These tests were taken in our lab with all three sensors directly next to eachother on a table top for the sole purpose of making sure they worked and the data could be handled and visualized.</p>
+</div>
+<div class="figure">
+<img src="/img/fluxplot.png" alt="The blue line represents direct flux readings from the eosense sensor. As expected, there isn’t much of anything occuring as we are not measuring one-way movement (for example: soil to air or water to air)" />
+<p class="caption">The blue line represents direct flux readings from the eosense sensor. As expected, there isn’t much of anything occuring as we are not measuring one-way movement (for example: soil to air or water to air)</p>
+</div>
+<p>To learn more about how this data gets from the sensor and into R and prepared for use and analysis, check out my post <a href="https://amurraygeo.com/post/formatting-eosense_vaisala/">here</a></p>
+<p><font size="2" color="grey">Citations:<br> 1. Johnson, Mark S., et al. “Direct and Continuous Measurement of Dissolved Carbon Dioxide in Freshwater Aquatic Systems-Method and Applications.” Ecohydrology, 2009, doi: 10.1002/eco.95. <br> 2. Ollinger, S.V. and Sallade, S.K. University of New Hampshire‐GLOBE Carbon Cycle Project. 2011. An Introduction to the Global Carbon Cycle: A companion to the GLOBE Carbon Cycle education materials. A co‐publication of the University of New Hampshire and the GLOBE Program Office.</font></p>
+</div>
+</div>
+<div id="more-to-come" class="section level2">
+<h2>More to come!</h2>
+<p><font size="2" color="black">Last Updated: October 11, 2018 </font></p>
+</div>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JustForFun on Andrew Murray</title>
+    <link>/tags/justforfun/</link>
+    <description>Recent content in JustForFun on Andrew Murray</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Mon, 15 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/justforfun/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>NC State Fair</title>
+      <link>/post/nc-state-fair/</link>
+      <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/nc-state-fair/</guid>
+      <description>NC State Fair Attendance  Check out this interactive plot on NC State Fair Attendance by day of the fair and colored by year.   I have been playing around with plotly visualizations and in the spirit of the North Carolina State Fair, wanted to show how the attendance changes by day of the fair and through the years. The code I used to create this plot can be found below.</description>
+    </item>
+    
+  </channel>
+</rss>

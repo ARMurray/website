@@ -39,5 +39,15 @@ weight = 7
   name = "Python"
   description = "Scripting"
   description = "ENVI"
+  
+[[feature]]
+  icon = "python"
+  icon_pack = "fab"
+  name = "Python"
+  
+[[feature]]
+  icon = "github"
+  icon_pack = "fab"
+  name = "Github"
 
 +++

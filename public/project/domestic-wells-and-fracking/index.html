@@ -105,8 +105,8 @@
   
   <meta property="og:site_name" content="Andrew Murray">
   <meta property="og:url" content="/project/domestic-wells-and-fracking/">
-  <meta property="og:title" content="Domestic Wells and Fracking | Andrew Murray">
-  <meta property="og:description" content="Methane Contamination of Wells In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed.">
+  <meta property="og:title" content="Domestic Wells and Fracking: | Andrew Murray">
+  <meta property="og:description" content="Methane Contamination of Wells In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed."><meta property="og:image" content="/img/AGU_Poster.png">
   <meta property="og:locale" content="en-us">
   
   <meta property="article:published_time" content="2018-09-11T00:00:00&#43;00:00">
@@ -118,7 +118,7 @@
 
   
 
-  <title>Domestic Wells and Fracking | Andrew Murray</title>
+  <title>Domestic Wells and Fracking: | Andrew Murray</title>
 
 </head>
 <body id="top" data-spy="scroll" data-target="#toc" data-offset="71" >
@@ -274,12 +274,21 @@
 <article class="article article-project" itemscope itemtype="http://schema.org/Article">
 
   
+<div class="article-header">
+  
+  
+    <img src="/img/AGU_Poster.png" class="article-banner" itemprop="image">
+  
+
+  
+</div>
+
 
 
   <div class="article-container">
 
     <div class="pub-title">
-      <h1 itemprop="name">Domestic Wells and Fracking</h1>
+      <h1 itemprop="name">Domestic Wells and Fracking:</h1>
       <span class="pub-authors" itemprop="author">&nbsp;</span>
       <span class="pull-right">
         
@@ -287,7 +296,7 @@
   <ul class="share">
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=Domestic%20Wells%20and%20Fracking&amp;url=%2fproject%2fdomestic-wells-and-fracking%2f"
+         href="https://twitter.com/intent/tweet?text=Domestic%20Wells%20and%20Fracking%3a&amp;url=%2fproject%2fdomestic-wells-and-fracking%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-twitter"></i>
       </a>
@@ -301,21 +310,21 @@
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fproject%2fdomestic-wells-and-fracking%2f&amp;title=Domestic%20Wells%20and%20Fracking"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fproject%2fdomestic-wells-and-fracking%2f&amp;title=Domestic%20Wells%20and%20Fracking%3a"
          target="_blank" rel="noopener">
         <i class="fab fa-linkedin-in"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=%2fproject%2fdomestic-wells-and-fracking%2f&amp;title=Domestic%20Wells%20and%20Fracking"
+         href="http://service.weibo.com/share/share.php?url=%2fproject%2fdomestic-wells-and-fracking%2f&amp;title=Domestic%20Wells%20and%20Fracking%3a"
          target="_blank" rel="noopener">
         <i class="fab fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=Domestic%20Wells%20and%20Fracking&amp;body=%2fproject%2fdomestic-wells-and-fracking%2f">
+         href="mailto:?subject=Domestic%20Wells%20and%20Fracking%3a&amp;body=%2fproject%2fdomestic-wells-and-fracking%2f">
         <i class="fas fa-envelope"></i>
       </a>
     </li>
@@ -332,6 +341,168 @@
       <div id="methane-contamination-of-wells" class="section level1">
 <h1>Methane Contamination of Wells</h1>
 <p>In recent years, the practice of hydraulic fracturing has raised concerns among those who obtain domestic water for home use from privately owned wells in areas that have been experienceing development of unconventional natural gas extraction (fracking) activities. This is a living document of my research investigating the potential risk to private wells from contamination relating to fracking throughout the United States. The goal of this document is for it to be submitted as a manuscript once it is completed.</p>
+<div id="this-is-the-working-file-for-my-hydraulic-fracturing-impact-analysis-paper." class="section level3">
+<h3>This is the working file for my hydraulic fracturing impact analysis paper.</h3>
+</div>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The purpose of this paper is to identify populations vulnerable to impacts from hydraulic fracturing activities, specifically based on their usage of privately owned domestic water wells. This is a living document to maintain the reproducibility and transparency of this research while also serving as an aid for others interested in doing similar work.</p>
+</div>
+</div>
+<div id="data-preparation" class="section level1">
+<h1>Data Preparation</h1>
+<div id="libraries" class="section level2">
+<h2>Libraries</h2>
+<p>First we’ll load the packages we need for our analysis. Simple Features (sf) is a package that will give us tools to work with geometries and spatial objects. The dplyr package provides tools for data management, and ggplot lets us visualize the data in a variety of ways.</p>
+<pre class="r"><code>library(sf)
+library(dplyr)
+library(ggplot2)</code></pre>
+</div>
+<div id="read-in-the-data" class="section level2">
+<h2>Read in the Data</h2>
+<p>Next, we’ll read in the data. Our data here is all in the NAD83 coordinate system and is unprojected, so we use the crs ‘4269’ which is NAD83 and import the shapefiles and csv and create sf objects. Then we project all of the data to UTM zone 17N which encompasses eastern Ohio. the sf package is pretty good about automatically rechognizing the projection if a shapefile it’s importing, so we don’t necesarrily need to provide the ‘crs = 4269’ argument. The oil/gas well data in this case is in a csv so the crs must be provided, and the csv must be converted to a sf object to give it spatial attributes.</p>
+<pre class="r"><code># Read and project blocks
+blocks &lt;- st_read(&#39;~/Documents/R_Geometry/Blocks_5mi_Utica_NAD83.shp&#39;, crs = 4269)
+blocks_prj &lt;-  st_transform(blocks, 2958)
+
+# Read csv of well pads, convert to a simple features object and project
+Wells &lt;- read.csv(&#39;~/Documents/R_Geometry/Downloaded/Utica_092218.csv&#39;)
+Wells_sf &lt;- st_as_sf(Wells, coords = c(&quot;Surf_Lon&quot;,&quot;Surf_Lat&quot;), crs = 4269)
+Wells_prj &lt;- st_transform(Wells_sf, 2958)
+
+# Read and project counties
+counties &lt;- st_read(&#39;~/Documents/R_Geometry/counties_NAD83.shp&#39;, crs = 4269)
+counties_prj &lt;- st_transform(counties, 2958)</code></pre>
+</div>
+<div id="setting-up-data-to-plot" class="section level2">
+<h2>Setting Up Data to Plot</h2>
+<p>We need to create centroids from the county layer so that we can use them to add text labels to the map. We do this by getting the coordinates of the centroids using st_centroid and then separating the x and y coordinates and putting them into a new sf object. Also here, we create a new object that gets the bounding box of the oil/gas wells. We’ll use this to create the extent of our map (so it is zoomed in to the right place). Finally we create a color palette which we use to symbolize the wells in the map.</p>
+<pre class="r"><code>centroids &lt;- st_centroid(counties_prj)
+centroids_xy &lt;- st_coordinates(centroids)
+centroids$X &lt;- centroids_xy[,1]
+centroids$Y &lt;- centroids_xy[,2]
+bbox &lt;- st_bbox(Wells_prj)
+well_palette &lt;- c(&quot;#FF8500&quot;, &quot;#FFE600&quot;, &quot;#65E809&quot;, &quot;#E81903&quot;)</code></pre>
+</div>
+<div id="making-our-first-plot" class="section level2">
+<h2>Making Our First Plot</h2>
+<p>The code chunk below plots the map below which displays oil and gas well data obtained from the Ohio Department of Natural Resources. These are wells drilled into the Utica Shale and are color coded by their status (as of September 22, 2018). Using the ggplot and sf packages, the data includes wells and U.S. counties, both projected in UTM 17N. The last line of code sets the coordinate limits of the map based on the well data.</p>
+<pre class="r"><code>ggplot() + geom_sf(data = counties_prj)+
+  geom_sf(data = Wells_prj, aes(colour=Status, fill = Status))+ 
+  scale_fill_manual(values = well_palette) + scale_color_manual(values = well_palette)+
+  geom_text(data = centroids, aes(x = X, y = Y, label = NAME10),size = 2.5)+
+  xlim(as.integer(bbox$xmin), as.integer(bbox$xmax)) + ylim(as.integer(bbox$ymin), as.integer(bbox$ymax))</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-4-1.png" alt="Unconventional Oil and Gas Wells Drilled into the Utica Shale in Eastern Ohio (current as of September 22, 2018)" width="672" />
+<p class="caption">
+Figure 1: Unconventional Oil and Gas Wells Drilled into the Utica Shale in Eastern Ohio (current as of September 22, 2018)
+</p>
+</div>
+</div>
+<div id="geometries-and-thresholds" class="section level2">
+<h2>Geometries and Thresholds</h2>
+<p>The focus of this research is identifying domestic wells that are at potential risk of contamination from methane migration through the ground.We are working with different geographies, mainly Census Blocks and Buffered areas around oil and gas wells. Since the buffers slice through the Census areas, we’ll need to estimate the number of people that live within each Census block and also live within the buffer of the oil/gas well. To accomplish this, we will use the sf package and the intersection function to create new geometries of Census blocks within buffers. We will use area to weight well estimates into the newly created areas and then add them together for each oil/gas well.</p>
+<p>For this example, I import new data which is a subset of the database of oil and gas wells shown above. Using the st_buffer function from the sf package, buffers are created around the well pads. A plot is then created to visualize the relationship between the well pad, the buffer and the census blocks.</p>
+<pre class="r"><code>
+# The goal here is to iterate through the well pads and determine
+# the areas of blocks that are at risk of contamination and to weight
+# estimated well use into those areas so we can come up with a total
+# number of wells at risk from each well pad
+
+# First, lets import the well pad and the block data and then project them to
+# a projection that is good for our working area.
+pads &lt;- st_read(&quot;~/Documents/Fracking/shapefiles/OH_Well.shp&quot;)
+## Reading layer `OH_Well&#39; from data source `/Users/Andrew/Documents/Fracking/shapefiles/OH_Well.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 1 feature and 11 fields
+## geometry type:  POINT
+## dimension:      XY
+## bbox:           xmin: -80.94222 ymin: 40.63364 xmax: -80.94222 ymax: 40.63364
+## epsg (SRID):    4269
+## proj4string:    +proj=longlat +datum=NAD83 +no_defs
+blocks &lt;- st_read(&quot;~/Documents/Fracking/shapefiles/OH_Blocks_Sub.shp&quot;)
+## Reading layer `OH_Blocks_Sub&#39; from data source `/Users/Andrew/Documents/Fracking/shapefiles/OH_Blocks_Sub.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 7 features and 18 fields
+## geometry type:  POLYGON
+## dimension:      XY
+## bbox:           xmin: -80.96146 ymin: 40.61719 xmax: -80.89358 ymax: 40.64378
+## epsg (SRID):    4269
+## proj4string:    +proj=longlat +datum=NAD83 +no_defs
+
+# Project data
+pads &lt;- st_transform(pads,3158)
+blocks &lt;- st_transform(blocks, 3158)
+
+# Add some data to the Census Blocks
+# blocks$
+
+# Create buffers around the well pads of 1,000 km
+buf &lt;- st_buffer(pads, 1000)
+blk_pts &lt;- st_centroid(blocks)
+
+# This plot shows a group of Census blocks with estimated numbers of wells within each one.
+# The buffer shown with the circle is 1 km from the fracking operation. #In order to estimate
+# the number of wells within the buffer, we need to use area to weight the number of wells within
+# each intersecting census block that are likely to also be within the 1 km buffer
+p1 &lt;- ggplot()+
+  geom_sf(data = blocks)+
+  geom_sf(data = buf, fill = NA, color = &#39;black&#39;, size = 2)+
+  geom_sf(data = pads, size = 5, pch = 17, col = &#39;red&#39;)+
+  geom_sf_label(data = blk_pts, mapping = aes(label = as.integer(Hybd_Blk_W)))+
+  xlab(&quot;&quot;)+ylab(&quot;&quot;)
+
+p1</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-5"></span>
+<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-5-1.png" alt="The numbers show the estimated number of wells within each Census block. There are a total of 75 estimated wells in these blocks. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads." width="672" />
+<p class="caption">
+Figure 2: The numbers show the estimated number of wells within each Census block. There are a total of 75 estimated wells in these blocks. The goal is to create new shapes by using the buffer to cut trhough the Census blocks, determine the percent area of the new shapes to the original blocks, and weight the wells into new estimates of wells within a given distance of oil and gas well pads.
+</p>
+</div>
+<p>Now we need to create the new geometries and do the math. In the following loop, we will iterate through every oil/gas well to create buffers. Thos buffers will be intersected with the census blocks to create new areas. The reason we need to iterate through one gas well at a time is because if another gas well exists within the buffer distance, they will overlap and conflict with eachothers geometries, giving us bad results.</p>
+<pre class="r"><code>#Create an empty data frame that the rsults will be written to
+outdf &lt;- data.frame()
+
+#This loop will run once for every record
+for (r in 1:nrow(pads)){
+  row &lt;- pads[r,] # gets the row as an object
+  buffer &lt;- st_buffer(row, 1000) # creates a buffer
+  intersects &lt;- st_intersection(blocks,buffer) # intersects the buffer with the blocks and creates new sf object
+  intersects$NewArea &lt;- st_area(intersects) # calculates area of the newly created shapes
+  intersects$wells &lt;- intersects$Hybd_Blk_W * (intersects$NewArea / intersects$Shape_Area) # calculates what percentage of the original Census block the new area is and multiplies it by estimated wells
+  wells &lt;- sum(intersects$wells) # sums the estimated wells within the vuffer area of the well pad
+  new &lt;- data.frame(&quot;API_Number&quot;=row$API,&quot;Est_Wells&quot;=wells) # creates a new record to add to the results table
+  outdf &lt;- rbind(outdf,new) # writes the record to the results table
+}
+
+# Make pts based on centroids to display the number of wells in a plot
+# NOTE: This will only pull information from the last iteration of the for loop above
+# and will not include all of the well pads/blocks
+pts &lt;- st_centroid(intersects)
+coords &lt;- as.data.frame(st_coordinates(pts))
+pts$X &lt;- coords[&#39;X&#39;]
+pts$Y &lt;- coords[&#39;Y&#39;]
+
+# Create a plot showing the estimated number of wells within each part of each 
+# block that intersects the buffer area around the oil/gas well  
+p2 &lt;- ggplot()+
+  geom_sf(data = intersects, size = 1.5)+
+  geom_sf(data = row, size = 5, pch = 17, col = &#39;red&#39;)+
+  geom_sf_label(data = pts, mapping = aes(label=as.integer(wells)))+
+  xlab(&quot;&quot;)+ylab(&quot;&quot;)
+  
+p2</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-6"></span>
+<img src="/project/2018-09-11-domestic-wells-and-fracking_files/figure-html/unnamed-chunk-6-1.png" alt="The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally there were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer." width="672" />
+<p class="caption">
+Figure 3: The result is a set of areas that are both within the buffer area and part of a Census block. In this case we see that we estimate 22 domestic wells to be within 1 km of this well pad whereas originally there were estimated to be 75 domestic wells in the Census blocks that touched the 1 km buffer.
+</p>
+</div>
+<div id="this-is-the-end-of-the-document-for-now-please-check-back-soon-to-see-the-progress" class="section level3">
+<h3>This is the end of the document for now, please check back soon to see the progress!</h3>
+<div id="last-updated-december-10-2018" class="section level4">
+<h4>Last Updated: December 10, 2018</h4>
+</div>
+</div>
+</div>
 </div>
 
     </div>
@@ -365,6 +536,45 @@
       
       
       
+      
+        <h2>Talks</h2>
+        
+          <div class="pub-list-item" style="margin-bottom: 1rem" itemscope itemtype="http://schema.org/Event">
+  <i class="fas fa-calendar-alt pub-icon" aria-hidden="true"></i>
+  <span itemprop="name"><a href="/talk/untitled/">AGU Poster</a></span>
+  <div itemprop="startDate">
+    
+    Dec 11, 2018
+    
+      8:00 AM
+    
+  </div>
+  <div class="talk-metadata">
+    
+            American Geophysical Union Fall Meeting
+    
+  </div>
+  <div class="talk-links">
+    
+
+
+
+
+
+
+
+  
+  <a class="btn btn-primary btn-outline btn-xs" href="/project/domestic-wells-and-fracking/">
+    Project
+  </a>
+  
+
+
+
+  </div>
+</div>
+
+        
       
     
 
