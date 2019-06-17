@@ -34,16 +34,18 @@ library(ggplot2)
 library(tidyr)
 library(sf)
 library(miceadds)
+library(here)
+library(plm)
 ```
 
 
 ## Import formatted crop data
 
 ```{r data_import}
-crops <- read.csv("~/Documents/Geog_803/Analysis/FinalCrops.csv")
-ppt <- read.csv("~/Documents/Geog_803/Analysis/Num_ppt_Extreme_Days_Growing.csv")
-temp <- read.csv("~/Documents/Geog_803/Analysis/Num_TMax_Extreme_Days_Growing.csv")
-zero <- read.csv("~/Documents/Geog_803/Analysis/Num_Zero_Ppt_Days_Growing.csv")
+crops <- read.csv(here("data","FinalCrops.csv"))
+ppt <- read.csv(here("data","Num_ppt_Extreme_Days_Growing.csv"))
+temp <- read.csv(here("data","Num_TMax_Extreme_Days_Growing.csv"))
+zero <- read.csv(here("data","Num_Zero_Ppt_Days_Growing.csv"))
 
 ```
 
@@ -59,7 +61,7 @@ zero$join <- paste0(zero$County,zero$Year)
 
 ## Load Shapefile of Study Area
 ```{r shapefile}
-counties <- st_read("~/Documents/Geog_803/Analysis/counties.shp")%>%
+counties <- st_read(here("data","counties.shp"))%>%
   filter(STATEFP10 %in% c(37,45,13))
 
 ```
@@ -258,10 +260,10 @@ summary(lmSoybeans)$r.squared
 
 #Cluster
 
-model <- plm(price ~ sales, model = 'within', data = Cigar)
-G <- length(unique(Cigar$state))
-c <- G/(G - 1)
-coeftest(model,c * vcovHC(model, type = "HC1", cluster = "group"))
+#model <- plm(price ~ sales, model = 'within', data = Cigar)
+#G <- length(unique(Cigar$state))
+#c <- G/(G - 1)
+#coeftest(model,c * vcovHC(model, type = "HC1", cluster = "group"))
 ```
 
 ## Corn

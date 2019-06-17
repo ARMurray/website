@@ -16,4 +16,828 @@ header:
 
 
 
+<div id="this-is-our-living-document-which-will-evolve-into-a-paper-to-be-published-on-the-impact-of-climate-extremes-on-crop-yields-in-the-southeastern-united-states" class="section level1">
+<h1>This is our living document which will evolve into a paper to be published on the impact of climate extremes on crop yields in the southeastern United States</h1>
+<div id="about-this-document" class="section level2">
+<h2>About this document</h2>
+<p>This document is written using R Markdown which means that all of the plots and statistics within it were created using actual code which will be presented alongside them. The data used in this research is all free and publicly available. Climate data (precipitation and temperature) was aquired from the <a href="http://www.prism.oregonstate.edu/">PRISM Climate Group</a>. Crop yield data was downloaded from the <a href="https://quickstats.nass.usda.gov/">USDA Quick Stats Database</a>.</p>
+<div id="crop-data" class="section level3">
+<h3>Crop Data</h3>
+<p>While USDA crop data is available back into the early nineteen hundreds, we utilized data available in 1981 and onward due to limitations imposed by the PRISM climate model. Corn, cotton, peanuts, soybeans and sweet potatoes were identified as major crops grown in the Carolinas and Georgia which have an abundance of crop yield data available within this time period.</p>
+</div>
+<div id="climate-data" class="section level3">
+<h3>Climate Data</h3>
+<p>“PRISM datasets provide estimates of six basic climate elements: precipitation (ppt), minimum temperature (tmin), maximum temperature (tmax), mean dew point (tdmean), minimum vapor pressure deficit (vpdmin), and maximum vapor pressure deficit (vpdmax).” Precipitation and temperature are both avialable in daily, monthly and annual timescales at a spatial resolution of 4km (1981 - Present).</p>
+</div>
+</div>
+<div id="import-formatted-crop-data" class="section level2">
+<h2>Import formatted crop data</h2>
+<pre class="r"><code>crops &lt;- read.csv(here(&quot;data&quot;,&quot;FinalCrops.csv&quot;))
+ppt &lt;- read.csv(here(&quot;data&quot;,&quot;Num_ppt_Extreme_Days_Growing.csv&quot;))
+temp &lt;- read.csv(here(&quot;data&quot;,&quot;Num_TMax_Extreme_Days_Growing.csv&quot;))
+zero &lt;- read.csv(here(&quot;data&quot;,&quot;Num_Zero_Ppt_Days_Growing.csv&quot;))</code></pre>
+</div>
+<div id="add-join-fields" class="section level2">
+<h2>Add join fields</h2>
+<pre class="r"><code>ppt$join &lt;- paste0(ppt$County,ppt$Year)
+temp$join &lt;- paste0(temp$County,temp$Year)
+zero$join &lt;- paste0(zero$County,zero$Year)</code></pre>
+</div>
+<div id="load-shapefile-of-study-area" class="section level2">
+<h2>Load Shapefile of Study Area</h2>
+<pre class="r"><code>counties &lt;- st_read(here(&quot;data&quot;,&quot;counties.shp&quot;))%&gt;%
+  filter(STATEFP10 %in% c(37,45,13))</code></pre>
+<pre><code>## Reading layer `Counties&#39; from data source `C:\Users\ARMur\OneDrive - University of North Carolina at Chapel Hill\website\data\Counties.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 305 features and 20 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: 939223.1 ymin: -701249.8 xmax: 1833737 ymax: 82072.38
+## epsg (SRID):    NA
+## proj4string:    +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs</code></pre>
+</div>
+<div id="create-subsets-for-each-crop" class="section level2">
+<h2>Create subsets for each crop</h2>
+<pre class="r"><code>crops$FIPS &lt;- paste0(&quot;F&quot;,crops$FIPS)
+crops$join &lt;- paste0(crops$FIPS,crops$Year)
 
+crops &lt;- merge(crops, ppt, by = &quot;join&quot;)
+crops &lt;- merge(crops, temp, by = &quot;join&quot;)
+crops &lt;- crops%&gt;%
+  select(-X.x,-Year.x,-Year.y,-County.x,-X.y,-County.y)
+colnames(crops)[20:23] &lt;- c(&quot;ExtPptDays&quot;,&quot;Year&quot;,&quot;Fips&quot;,&quot;ExtTempDays&quot;, &quot;ZeroDays&quot;)</code></pre>
+<pre><code>## Warning in colnames(crops)[20:23] &lt;- c(&quot;ExtPptDays&quot;, &quot;Year&quot;, &quot;Fips&quot;,
+## &quot;ExtTempDays&quot;, : number of items to replace is not a multiple of
+## replacement length</code></pre>
+<pre class="r"><code>crops &lt;- merge(crops, zero, by = &quot;join&quot;)
+
+
+soybeans &lt;- crops%&gt;%
+  filter(Commodity == &quot;SOYBEANS&quot;)%&gt;%
+  select(Value, FIPS,Year.x,ExtPptDays,ExtTempDays, NumZeroDays)
+
+corn &lt;-  crops%&gt;%
+  filter(Commodity == &quot;CORN&quot;)%&gt;%
+  select(Value, FIPS,Year.x,ExtPptDays,ExtTempDays, NumZeroDays)
+
+cotton &lt;-  crops%&gt;%
+  filter(Commodity == &quot;COTTON&quot;)%&gt;%
+  select(Value, FIPS,Year.x,ExtPptDays,ExtTempDays, NumZeroDays)
+
+peanuts &lt;-  crops%&gt;%
+  filter(Commodity == &quot;PEANUTS&quot;)%&gt;%
+  select(Value, FIPS,Year.x,ExtPptDays,ExtTempDays, NumZeroDays)
+
+sweetPotatoes &lt;- crops%&gt;%
+  filter(Commodity == &quot;SWEET POTATOES&quot;)%&gt;%
+  select(Value, FIPS,Year.x,ExtPptDays,ExtTempDays, NumZeroDays)</code></pre>
+</div>
+</div>
+<div id="filter-to-keep-only-counties-with-29-years-of-records" class="section level1">
+<h1>Filter to keep only counties with &gt;29 years of records</h1>
+<pre class="r"><code># Soybeans
+counts &lt;- as.data.frame(table(soybeans$FIPS))
+GT30 &lt;- counts%&gt;%
+  filter(Freq &gt; 29)
+countiesGT30 &lt;- GT30$Var1
+
+soybeanCounts &lt;- counts
+soybeanCounties &lt;- nrow(counts)
+soybeanCountiesGT30 &lt;- nrow(GT30)
+
+soybeans &lt;- soybeans%&gt;%
+  filter(FIPS %in% countiesGT30)
+
+# Corn
+counts &lt;- as.data.frame(table(corn$FIPS))
+GT30 &lt;- counts%&gt;%
+  filter(Freq &gt; 29)
+countiesGT30 &lt;- GT30$Var1
+
+cornCounts &lt;- counts
+cornCounties &lt;- nrow(counts)
+cornCountiesGT30 &lt;- nrow(GT30)
+
+corn &lt;- corn%&gt;%
+  filter(FIPS %in% countiesGT30)
+
+# Cotton
+counts &lt;- as.data.frame(table(cotton$FIPS))
+GT30 &lt;- counts%&gt;%
+  filter(Freq &gt; 29)
+countiesGT30 &lt;- GT30$Var1
+
+cottonCounts &lt;- counts
+cottonCounties &lt;- nrow(counts)
+cottonCountiesGT30 &lt;- nrow(GT30)
+
+cotton &lt;- cotton%&gt;%
+  filter(FIPS %in% countiesGT30)
+
+# Peanuts
+counts &lt;- as.data.frame(table(peanuts$FIPS))
+GT30 &lt;- counts%&gt;%
+  filter(Freq &gt; 29)
+countiesGT30 &lt;- GT30$Var1
+
+peanutsCounts &lt;- counts
+peanutsCounties &lt;- nrow(counts)
+peanutsCountiesGT30 &lt;- nrow(GT30)
+
+peanuts &lt;- peanuts%&gt;%
+  filter(FIPS %in% countiesGT30)
+
+# Sweet Potatoes
+counts &lt;- as.data.frame(table(sweetPotatoes$FIPS))
+GT30 &lt;- counts%&gt;%
+  filter(Freq &gt; 29)
+countiesGT30 &lt;- GT30$Var1
+
+sweetPotatoCounts &lt;- counts
+sweetPotatoesCounties &lt;- nrow(counts)
+sweetPotatoesCountiesGT30 &lt;- nrow(GT30)
+
+sweetPotatoes &lt;- sweetPotatoes%&gt;%
+  filter(FIPS %in% countiesGT30)</code></pre>
+<div id="data-description" class="section level2">
+<h2>Data Description</h2>
+<pre><code>##             Crop Counties.Grown Counties.with.30.years.of.data Data.Points
+## 1           Corn            303                            162        5674
+## 2         Cotton            211                             91        3215
+## 3        Peanuts            141                             64        2194
+## 4       Soybeans            286                            148        5182
+## 5 Sweet Potatoes             83                              6         199</code></pre>
+</div>
+</div>
+<div id="crop-maps" class="section level1">
+<h1>Crop Maps</h1>
+<pre><code>## Warning in merge.data.frame(sf, soybeanCounts, by.x = &quot;FIPS&quot;, by.y =
+## &quot;Var1&quot;, : column names &#39;Freq.x&#39;, &#39;Freq.y&#39; are duplicated in the result</code></pre>
+<div id="corn" class="section level2">
+<h2>Corn</h2>
+<p><img src="/post/2019-04-01-climate-extremes-crop-yields_files/figure-html/cornMap-1.png" width="672" /></p>
+</div>
+<div id="cotton" class="section level2">
+<h2>Cotton</h2>
+<p><img src="/post/2019-04-01-climate-extremes-crop-yields_files/figure-html/cottonMap-1.png" width="672" /></p>
+</div>
+<div id="peanuts" class="section level2">
+<h2>Peanuts</h2>
+<p><img src="/post/2019-04-01-climate-extremes-crop-yields_files/figure-html/peanutsMap-1.png" width="672" /></p>
+</div>
+<div id="soybeans" class="section level2">
+<h2>Soybeans</h2>
+<p><img src="/post/2019-04-01-climate-extremes-crop-yields_files/figure-html/soybeansMap-1.png" width="672" /></p>
+</div>
+<div id="sweet-potatoes" class="section level2">
+<h2>Sweet Potatoes</h2>
+<p><img src="/post/2019-04-01-climate-extremes-crop-yields_files/figure-html/sweetPotatoesMap-1.png" width="672" /></p>
+</div>
+</div>
+<div id="analysis-by-crop" class="section level1">
+<h1>Analysis by crop</h1>
+<p>The current process we qare using is to de-mean the yields by subtracting yield from mean yield (accross all years) by county. Then we detrend the effects of time on yield of crops by subtracting the residuals of yield~year from yield. We then run a regression which includes extreme precipitation days, extreme temperature days, and year and county as factors.</p>
+<div id="soybeans-1" class="section level2">
+<h2>Soybeans</h2>
+<pre class="r"><code># Soybeans
+
+lmSoybeans &lt;- lm(soybeans$Value~soybeans$ExtPptDays+soybeans$ExtTempDays+soybeans$Year+soybeans$NumZeroDays+factor(soybeans$FIPS))
+summary(lmSoybeans)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = soybeans$Value ~ soybeans$ExtPptDays + soybeans$ExtTempDays + 
+##     soybeans$Year + soybeans$NumZeroDays + factor(soybeans$FIPS))
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -22.7378  -2.9865   0.2161   3.1941  28.4374 
+## 
+## Coefficients:
+##                               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                 -6.320e+02  1.472e+01 -42.926  &lt; 2e-16 ***
+## soybeans$ExtPptDays          1.024e-01  2.445e-02   4.189 2.85e-05 ***
+## soybeans$ExtTempDays        -1.922e-01  7.105e-03 -27.056  &lt; 2e-16 ***
+## soybeans$Year                3.340e-01  7.244e-03  46.106  &lt; 2e-16 ***
+## soybeans$NumZeroDays        -4.641e-02  8.518e-03  -5.449 5.30e-08 ***
+## factor(soybeans$FIPS)F13005 -2.273e+00  1.294e+00  -1.756 0.079079 .  
+## factor(soybeans$FIPS)F13015  1.369e-01  1.252e+00   0.109 0.912972    
+## factor(soybeans$FIPS)F13019 -5.482e-01  1.272e+00  -0.431 0.666436    
+## factor(soybeans$FIPS)F13023 -3.552e+00  1.295e+00  -2.743 0.006116 ** 
+## factor(soybeans$FIPS)F13027  5.184e+00  1.227e+00   4.227 2.41e-05 ***
+## factor(soybeans$FIPS)F13031 -2.578e+00  1.243e+00  -2.074 0.038140 *  
+## factor(soybeans$FIPS)F13033 -4.869e+00  1.227e+00  -3.969 7.31e-05 ***
+## factor(soybeans$FIPS)F13055 -3.182e-01  1.253e+00  -0.254 0.799571    
+## factor(soybeans$FIPS)F13069 -8.173e-02  1.235e+00  -0.066 0.947226    
+## factor(soybeans$FIPS)F13087  5.112e+00  1.282e+00   3.987 6.79e-05 ***
+## factor(soybeans$FIPS)F13091 -1.361e+00  1.262e+00  -1.078 0.280895    
+## factor(soybeans$FIPS)F13093 -3.633e+00  1.255e+00  -2.895 0.003802 ** 
+## factor(soybeans$FIPS)F13099  4.698e-01  1.272e+00   0.369 0.711889    
+## factor(soybeans$FIPS)F13103 -2.681e+00  1.262e+00  -2.125 0.033635 *  
+## factor(soybeans$FIPS)F13107 -3.058e+00  1.272e+00  -2.404 0.016264 *  
+## factor(soybeans$FIPS)F13109 -1.886e+00  1.273e+00  -1.481 0.138600    
+## factor(soybeans$FIPS)F13129  4.341e+00  1.284e+00   3.381 0.000727 ***
+## factor(soybeans$FIPS)F13131  1.880e+00  1.235e+00   1.523 0.127838    
+## factor(soybeans$FIPS)F13153 -5.725e+00  1.283e+00  -4.461 8.33e-06 ***
+## factor(soybeans$FIPS)F13163 -2.834e+00  1.254e+00  -2.261 0.023814 *  
+## factor(soybeans$FIPS)F13165 -2.502e+00  1.263e+00  -1.982 0.047572 *  
+## factor(soybeans$FIPS)F13167 -6.473e+00  1.253e+00  -5.166 2.49e-07 ***
+## factor(soybeans$FIPS)F13175 -4.911e+00  1.252e+00  -3.922 8.91e-05 ***
+## factor(soybeans$FIPS)F13185  3.404e-01  1.293e+00   0.263 0.792388    
+## factor(soybeans$FIPS)F13193 -1.907e+00  1.247e+00  -1.530 0.126178    
+## factor(soybeans$FIPS)F13197 -3.707e+00  1.245e+00  -2.977 0.002924 ** 
+## factor(soybeans$FIPS)F13209 -5.613e+00  1.283e+00  -4.373 1.25e-05 ***
+## factor(soybeans$FIPS)F13225 -3.898e+00  1.289e+00  -3.024 0.002506 ** 
+## factor(soybeans$FIPS)F13229 -1.370e+00  1.252e+00  -1.094 0.274131    
+## factor(soybeans$FIPS)F13243  2.413e+00  1.245e+00   1.938 0.052657 .  
+## factor(soybeans$FIPS)F13251 -2.012e+00  1.253e+00  -1.607 0.108185    
+## factor(soybeans$FIPS)F13253  5.382e+00  1.283e+00   4.196 2.76e-05 ***
+## factor(soybeans$FIPS)F13261 -2.031e+00  1.294e+00  -1.569 0.116712    
+## factor(soybeans$FIPS)F13267 -8.868e-01  1.235e+00  -0.718 0.472644    
+## factor(soybeans$FIPS)F13269 -6.143e+00  1.264e+00  -4.862 1.20e-06 ***
+## factor(soybeans$FIPS)F13273 -2.816e+00  1.236e+00  -2.279 0.022726 *  
+## factor(soybeans$FIPS)F13275  3.420e+00  1.272e+00   2.689 0.007185 ** 
+## factor(soybeans$FIPS)F13279 -5.318e-02  1.243e+00  -0.043 0.965885    
+## factor(soybeans$FIPS)F13295  2.586e+00  1.262e+00   2.049 0.040519 *  
+## factor(soybeans$FIPS)F13299  7.151e-01  1.268e+00   0.564 0.572703    
+## factor(soybeans$FIPS)F37001 -1.232e+00  1.229e+00  -1.002 0.316319    
+## factor(soybeans$FIPS)F37003 -2.708e-01  1.252e+00  -0.216 0.828789    
+## factor(soybeans$FIPS)F37007  9.840e-01  1.246e+00   0.790 0.429830    
+## factor(soybeans$FIPS)F37013  4.088e+00  1.227e+00   3.333 0.000866 ***
+## factor(soybeans$FIPS)F37015  2.202e+00  1.227e+00   1.794 0.072857 .  
+## factor(soybeans$FIPS)F37017 -3.774e+00  1.227e+00  -3.077 0.002103 ** 
+## factor(soybeans$FIPS)F37019 -3.838e+00  1.294e+00  -2.966 0.003028 ** 
+## factor(soybeans$FIPS)F37023  4.892e-01  1.263e+00   0.387 0.698528    
+## factor(soybeans$FIPS)F37025 -8.003e-01  1.240e+00  -0.645 0.518816    
+## factor(soybeans$FIPS)F37029  6.502e+00  1.229e+00   5.290 1.28e-07 ***
+## factor(soybeans$FIPS)F37031  3.316e+00  1.283e+00   2.585 0.009757 ** 
+## factor(soybeans$FIPS)F37033 -3.391e+00  1.246e+00  -2.722 0.006504 ** 
+## factor(soybeans$FIPS)F37035 -5.759e-01  1.227e+00  -0.469 0.638885    
+## factor(soybeans$FIPS)F37037 -1.922e+00  1.246e+00  -1.543 0.122963    
+## factor(soybeans$FIPS)F37041  6.508e+00  1.275e+00   5.103 3.47e-07 ***
+## factor(soybeans$FIPS)F37045 -3.083e+00  1.227e+00  -2.513 0.012015 *  
+## factor(soybeans$FIPS)F37047 -3.497e+00  1.227e+00  -2.851 0.004381 ** 
+## factor(soybeans$FIPS)F37049  2.584e-01  1.227e+00   0.211 0.833204    
+## factor(soybeans$FIPS)F37051 -4.329e+00  1.227e+00  -3.528 0.000422 ***
+## factor(soybeans$FIPS)F37053  6.612e+00  1.237e+00   5.346 9.41e-08 ***
+## factor(soybeans$FIPS)F37057  1.148e+00  1.228e+00   0.934 0.350108    
+## factor(soybeans$FIPS)F37059  1.003e+00  1.231e+00   0.814 0.415459    
+## factor(soybeans$FIPS)F37061 -1.230e+00  1.227e+00  -1.003 0.316049    
+## factor(soybeans$FIPS)F37065 -3.126e-01  1.230e+00  -0.254 0.799451    
+## factor(soybeans$FIPS)F37067 -1.389e+00  1.253e+00  -1.108 0.267859    
+## factor(soybeans$FIPS)F37069 -4.361e+00  1.229e+00  -3.548 0.000392 ***
+## factor(soybeans$FIPS)F37071 -1.370e+00  1.246e+00  -1.099 0.271791    
+## factor(soybeans$FIPS)F37073  5.572e+00  1.228e+00   4.537 5.83e-06 ***
+## factor(soybeans$FIPS)F37077 -4.502e+00  1.227e+00  -3.668 0.000247 ***
+## factor(soybeans$FIPS)F37079  9.796e-01  1.230e+00   0.797 0.425762    
+## factor(soybeans$FIPS)F37081 -3.053e-01  1.236e+00  -0.247 0.804993    
+## factor(soybeans$FIPS)F37083  6.609e-01  1.236e+00   0.535 0.592881    
+## factor(soybeans$FIPS)F37085 -3.980e+00  1.229e+00  -3.238 0.001212 ** 
+## factor(soybeans$FIPS)F37091  1.358e+00  1.244e+00   1.091 0.275280    
+## factor(soybeans$FIPS)F37093 -3.062e+00  1.262e+00  -2.427 0.015270 *  
+## factor(soybeans$FIPS)F37095  6.153e+00  1.235e+00   4.983 6.47e-07 ***
+## factor(soybeans$FIPS)F37097  1.335e+00  1.235e+00   1.081 0.279768    
+## factor(soybeans$FIPS)F37101 -2.735e+00  1.228e+00  -2.227 0.025969 *  
+## factor(soybeans$FIPS)F37103 -6.097e-01  1.244e+00  -0.490 0.624026    
+## factor(soybeans$FIPS)F37105 -5.352e+00  1.241e+00  -4.314 1.64e-05 ***
+## factor(soybeans$FIPS)F37107 -3.187e-01  1.229e+00  -0.259 0.795392    
+## factor(soybeans$FIPS)F37109 -2.931e+00  1.228e+00  -2.387 0.017035 *  
+## factor(soybeans$FIPS)F37117  1.172e+00  1.244e+00   0.942 0.346334    
+## factor(soybeans$FIPS)F37119 -5.570e-01  1.274e+00  -0.437 0.662065    
+## factor(soybeans$FIPS)F37123 -4.425e-01  1.283e+00  -0.345 0.730281    
+## factor(soybeans$FIPS)F37125 -4.093e+00  1.236e+00  -3.312 0.000934 ***
+## factor(soybeans$FIPS)F37127 -2.829e+00  1.229e+00  -2.301 0.021407 *  
+## factor(soybeans$FIPS)F37131  1.025e+00  1.228e+00   0.835 0.403966    
+## factor(soybeans$FIPS)F37133 -1.088e-01  1.243e+00  -0.088 0.930244    
+## factor(soybeans$FIPS)F37135 -6.298e-01  1.229e+00  -0.512 0.608335    
+## factor(soybeans$FIPS)F37137  5.229e+00  1.253e+00   4.174 3.05e-05 ***
+## factor(soybeans$FIPS)F37139  7.084e+00  1.256e+00   5.640 1.80e-08 ***
+## factor(soybeans$FIPS)F37143  7.239e+00  1.229e+00   5.890 4.11e-09 ***
+## factor(soybeans$FIPS)F37145 -2.383e+00  1.229e+00  -1.938 0.052639 .  
+## factor(soybeans$FIPS)F37147 -8.489e-01  1.228e+00  -0.692 0.489278    
+## factor(soybeans$FIPS)F37151  1.337e+00  1.229e+00   1.089 0.276378    
+## factor(soybeans$FIPS)F37153 -1.948e+00  1.283e+00  -1.517 0.129208    
+## factor(soybeans$FIPS)F37155 -3.612e+00  1.227e+00  -2.944 0.003253 ** 
+## factor(soybeans$FIPS)F37157 -2.156e+00  1.228e+00  -1.756 0.079141 .  
+## factor(soybeans$FIPS)F37159  2.265e+00  1.230e+00   1.841 0.065710 .  
+## factor(soybeans$FIPS)F37161 -4.812e+00  1.283e+00  -3.750 0.000179 ***
+## factor(soybeans$FIPS)F37163 -1.166e+00  1.227e+00  -0.950 0.341938    
+## factor(soybeans$FIPS)F37165 -2.814e+00  1.236e+00  -2.278 0.022786 *  
+## factor(soybeans$FIPS)F37167  1.735e+00  1.231e+00   1.409 0.158945    
+## factor(soybeans$FIPS)F37169 -2.951e+00  1.252e+00  -2.356 0.018492 *  
+## factor(soybeans$FIPS)F37171  1.567e+00  1.235e+00   1.269 0.204436    
+## factor(soybeans$FIPS)F37177  6.160e+00  1.235e+00   4.988 6.30e-07 ***
+## factor(soybeans$FIPS)F37179  2.147e+00  1.230e+00   1.745 0.081033 .  
+## factor(soybeans$FIPS)F37181 -3.381e+00  1.233e+00  -2.743 0.006112 ** 
+## factor(soybeans$FIPS)F37183 -6.114e+00  1.228e+00  -4.980 6.57e-07 ***
+## factor(soybeans$FIPS)F37185 -3.493e+00  1.230e+00  -2.839 0.004550 ** 
+## factor(soybeans$FIPS)F37187  5.482e+00  1.237e+00   4.433 9.51e-06 ***
+## factor(soybeans$FIPS)F37191  2.394e-01  1.228e+00   0.195 0.845470    
+## factor(soybeans$FIPS)F37195  9.200e-01  1.231e+00   0.747 0.454824    
+## factor(soybeans$FIPS)F37197  9.053e-01  1.228e+00   0.737 0.461165    
+## factor(soybeans$FIPS)F45003 -7.795e+00  1.227e+00  -6.355 2.27e-10 ***
+## factor(soybeans$FIPS)F45005 -5.637e+00  1.228e+00  -4.591 4.52e-06 ***
+## factor(soybeans$FIPS)F45007 -7.441e+00  1.236e+00  -6.022 1.85e-09 ***
+## factor(soybeans$FIPS)F45009 -4.356e+00  1.235e+00  -3.527 0.000424 ***
+## factor(soybeans$FIPS)F45011 -5.953e+00  1.243e+00  -4.788 1.73e-06 ***
+## factor(soybeans$FIPS)F45015 -5.694e+00  1.274e+00  -4.469 8.01e-06 ***
+## factor(soybeans$FIPS)F45017 -3.942e+00  1.243e+00  -3.170 0.001532 ** 
+## factor(soybeans$FIPS)F45025 -4.253e+00  1.236e+00  -3.442 0.000581 ***
+## factor(soybeans$FIPS)F45027 -2.631e+00  1.227e+00  -2.144 0.032060 *  
+## factor(soybeans$FIPS)F45029 -6.023e+00  1.229e+00  -4.902 9.78e-07 ***
+## factor(soybeans$FIPS)F45031 -5.561e+00  1.229e+00  -4.525 6.17e-06 ***
+## factor(soybeans$FIPS)F45033 -4.625e+00  1.228e+00  -3.767 0.000167 ***
+## factor(soybeans$FIPS)F45035 -2.795e+00  1.227e+00  -2.278 0.022758 *  
+## factor(soybeans$FIPS)F45037 -7.816e+00  1.263e+00  -6.187 6.62e-10 ***
+## factor(soybeans$FIPS)F45041 -5.258e+00  1.227e+00  -4.284 1.87e-05 ***
+## factor(soybeans$FIPS)F45043 -3.919e+00  1.243e+00  -3.152 0.001631 ** 
+## factor(soybeans$FIPS)F45049 -3.496e+00  1.235e+00  -2.831 0.004652 ** 
+## factor(soybeans$FIPS)F45051 -5.380e+00  1.227e+00  -4.384 1.19e-05 ***
+## factor(soybeans$FIPS)F45055 -4.719e+00  1.263e+00  -3.736 0.000189 ***
+## factor(soybeans$FIPS)F45057 -5.596e+00  1.297e+00  -4.314 1.63e-05 ***
+## factor(soybeans$FIPS)F45061 -3.949e+00  1.229e+00  -3.213 0.001320 ** 
+## factor(soybeans$FIPS)F45063 -7.623e+00  1.227e+00  -6.211 5.68e-10 ***
+## factor(soybeans$FIPS)F45067 -5.320e+00  1.227e+00  -4.337 1.47e-05 ***
+## factor(soybeans$FIPS)F45069 -4.900e+00  1.227e+00  -3.993 6.62e-05 ***
+## factor(soybeans$FIPS)F45071 -4.110e+00  1.237e+00  -3.322 0.000901 ***
+## factor(soybeans$FIPS)F45073 -5.315e+00  1.274e+00  -4.171 3.08e-05 ***
+## factor(soybeans$FIPS)F45075 -3.440e+00  1.228e+00  -2.802 0.005102 ** 
+## factor(soybeans$FIPS)F45079 -5.799e+00  1.243e+00  -4.664 3.18e-06 ***
+## factor(soybeans$FIPS)F45083 -3.894e+00  1.262e+00  -3.085 0.002047 ** 
+## factor(soybeans$FIPS)F45085 -3.246e+00  1.227e+00  -2.645 0.008190 ** 
+## factor(soybeans$FIPS)F45089 -3.703e+00  1.235e+00  -2.999 0.002718 ** 
+## factor(soybeans$FIPS)F45091 -6.495e+00  1.274e+00  -5.098 3.55e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.163 on 5030 degrees of freedom
+## Multiple R-squared:  0.561,  Adjusted R-squared:  0.5478 
+## F-statistic: 42.56 on 151 and 5030 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(lmSoybeans)$r.squared</code></pre>
+<pre><code>## [1] 0.5609784</code></pre>
+<pre class="r"><code>#Cluster
+
+#model &lt;- plm(price ~ sales, model = &#39;within&#39;, data = Cigar)
+#G &lt;- length(unique(Cigar$state))
+#c &lt;- G/(G - 1)
+#coeftest(model,c * vcovHC(model, type = &quot;HC1&quot;, cluster = &quot;group&quot;))</code></pre>
+</div>
+<div id="corn-1" class="section level2">
+<h2>Corn</h2>
+<pre class="r"><code># Corn
+
+lmCorn &lt;- lm(corn$Value~corn$ExtPptDays+corn$ExtTempDays+corn$Year+corn$NumZeroDays+factor(corn$FIPS))
+summary(lmCorn)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = corn$Value ~ corn$ExtPptDays + corn$ExtTempDays + 
+##     corn$Year + corn$NumZeroDays + factor(corn$FIPS))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -80.391 -13.310  -0.111  13.131 123.639 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)             -3.535e+03  5.801e+01 -60.932  &lt; 2e-16 ***
+## corn$ExtPptDays          4.114e-01  9.474e-02   4.343 1.43e-05 ***
+## corn$ExtTempDays        -9.522e-01  2.759e-02 -34.519  &lt; 2e-16 ***
+## corn$Year                1.817e+00  2.856e-02  63.630  &lt; 2e-16 ***
+## corn$NumZeroDays         1.530e-02  3.341e-02   0.458 0.646979    
+## factor(corn$FIPS)F13003  1.691e+01  5.085e+00   3.325 0.000888 ***
+## factor(corn$FIPS)F13005 -4.076e+00  5.248e+00  -0.777 0.437352    
+## factor(corn$FIPS)F13007  6.481e+01  5.017e+00  12.919  &lt; 2e-16 ***
+## factor(corn$FIPS)F13015  1.353e+01  5.161e+00   2.622 0.008769 ** 
+## factor(corn$FIPS)F13017  2.526e+01  5.203e+00   4.855 1.24e-06 ***
+## factor(corn$FIPS)F13019  1.314e+01  5.161e+00   2.547 0.010904 *  
+## factor(corn$FIPS)F13023  2.774e+01  5.207e+00   5.327 1.04e-07 ***
+## factor(corn$FIPS)F13025 -1.922e+01  5.208e+00  -3.691 0.000225 ***
+## factor(corn$FIPS)F13027  1.304e+01  5.161e+00   2.526 0.011556 *  
+## factor(corn$FIPS)F13031  1.984e+00  5.202e+00   0.381 0.702947    
+## factor(corn$FIPS)F13033  2.914e+01  5.015e+00   5.811 6.56e-09 ***
+## factor(corn$FIPS)F13037  5.995e+01  5.025e+00  11.930  &lt; 2e-16 ***
+## factor(corn$FIPS)F13055 -7.720e-01  5.088e+00  -0.152 0.879409    
+## factor(corn$FIPS)F13069  1.620e+01  5.015e+00   3.230 0.001247 ** 
+## factor(corn$FIPS)F13071  2.540e+01  5.085e+00   4.995 6.06e-07 ***
+## factor(corn$FIPS)F13075  1.029e+01  5.050e+00   2.037 0.041699 *  
+## factor(corn$FIPS)F13081  1.171e+01  5.260e+00   2.227 0.026018 *  
+## factor(corn$FIPS)F13087  4.766e+01  5.049e+00   9.440  &lt; 2e-16 ***
+## factor(corn$FIPS)F13091  1.711e+01  5.124e+00   3.340 0.000842 ***
+## factor(corn$FIPS)F13093  1.892e+01  5.254e+00   3.601 0.000320 ***
+## factor(corn$FIPS)F13099  4.739e+01  5.162e+00   9.181  &lt; 2e-16 ***
+## factor(corn$FIPS)F13103 -9.808e+00  5.203e+00  -1.885 0.059455 .  
+## factor(corn$FIPS)F13107  8.974e-01  5.051e+00   0.178 0.858976    
+## factor(corn$FIPS)F13109 -2.050e+00  5.208e+00  -0.394 0.693871    
+## factor(corn$FIPS)F13115  1.254e+01  5.125e+00   2.447 0.014443 *  
+## factor(corn$FIPS)F13129  1.984e+01  5.090e+00   3.897 9.85e-05 ***
+## factor(corn$FIPS)F13131  1.800e+01  5.049e+00   3.565 0.000367 ***
+## factor(corn$FIPS)F13147  2.872e+01  5.216e+00   5.505 3.85e-08 ***
+## factor(corn$FIPS)F13153  2.100e+01  5.296e+00   3.964 7.45e-05 ***
+## factor(corn$FIPS)F13155  2.271e+01  5.049e+00   4.498 6.99e-06 ***
+## factor(corn$FIPS)F13161  1.447e+01  5.122e+00   2.825 0.004742 ** 
+## factor(corn$FIPS)F13163  5.772e+01  5.054e+00  11.422  &lt; 2e-16 ***
+## factor(corn$FIPS)F13165  2.202e+01  5.088e+00   4.327 1.54e-05 ***
+## factor(corn$FIPS)F13167  7.020e+00  5.164e+00   1.359 0.174057    
+## factor(corn$FIPS)F13173  8.117e-01  5.203e+00   0.156 0.876023    
+## factor(corn$FIPS)F13175  2.855e-01  5.203e+00   0.055 0.956248    
+## factor(corn$FIPS)F13185 -4.752e+00  5.202e+00  -0.913 0.361032    
+## factor(corn$FIPS)F13193  3.044e+01  5.062e+00   6.013 1.93e-09 ***
+## factor(corn$FIPS)F13197 -3.113e+00  5.056e+00  -0.616 0.538164    
+## factor(corn$FIPS)F13201  5.823e+01  5.055e+00  11.519  &lt; 2e-16 ***
+## factor(corn$FIPS)F13205  5.479e+01  5.086e+00  10.772  &lt; 2e-16 ***
+## factor(corn$FIPS)F13229  1.842e+01  5.122e+00   3.597 0.000325 ***
+## factor(corn$FIPS)F13233  4.442e+00  5.260e+00   0.845 0.398399    
+## factor(corn$FIPS)F13235  1.708e+01  5.306e+00   3.219 0.001292 ** 
+## factor(corn$FIPS)F13243  5.199e+01  5.167e+00  10.062  &lt; 2e-16 ***
+## factor(corn$FIPS)F13251  2.136e+01  5.016e+00   4.258 2.09e-05 ***
+## factor(corn$FIPS)F13253  7.010e+01  5.016e+00  13.975  &lt; 2e-16 ***
+## factor(corn$FIPS)F13261  3.566e+01  5.165e+00   6.904 5.62e-12 ***
+## factor(corn$FIPS)F13267  1.239e+01  5.084e+00   2.438 0.014808 *  
+## factor(corn$FIPS)F13273  3.975e+01  5.087e+00   7.813 6.64e-15 ***
+## factor(corn$FIPS)F13275 -6.842e-01  5.121e+00  -0.134 0.893724    
+## factor(corn$FIPS)F13277  2.197e+01  5.165e+00   4.254 2.13e-05 ***
+## factor(corn$FIPS)F13279  1.524e+01  5.122e+00   2.975 0.002940 ** 
+## factor(corn$FIPS)F13287  2.825e+01  5.086e+00   5.555 2.91e-08 ***
+## factor(corn$FIPS)F13299 -2.151e+00  5.070e+00  -0.424 0.671355    
+## factor(corn$FIPS)F13303  1.463e+01  5.163e+00   2.834 0.004618 ** 
+## factor(corn$FIPS)F13305 -2.582e+00  5.209e+00  -0.496 0.620205    
+## factor(corn$FIPS)F13311  1.239e+01  5.204e+00   2.381 0.017302 *  
+## factor(corn$FIPS)F13315  3.170e+01  5.162e+00   6.141 8.78e-10 ***
+## factor(corn$FIPS)F13321  3.077e+01  5.015e+00   6.135 9.12e-10 ***
+## factor(corn$FIPS)F37001 -2.264e+00  5.058e+00  -0.448 0.654419    
+## factor(corn$FIPS)F37003 -3.095e+00  5.121e+00  -0.604 0.545703    
+## factor(corn$FIPS)F37007  1.819e+00  5.060e+00   0.360 0.719221    
+## factor(corn$FIPS)F37013  2.507e+01  5.016e+00   4.999 5.95e-07 ***
+## factor(corn$FIPS)F37015  6.766e+00  5.017e+00   1.348 0.177557    
+## factor(corn$FIPS)F37017  3.418e+00  5.015e+00   0.682 0.495531    
+## factor(corn$FIPS)F37019  9.130e-01  5.017e+00   0.182 0.855598    
+## factor(corn$FIPS)F37023  2.925e+00  5.020e+00   0.583 0.560095    
+## factor(corn$FIPS)F37025 -7.168e-01  5.037e+00  -0.142 0.886839    
+## factor(corn$FIPS)F37027  6.632e+00  5.206e+00   1.274 0.202731    
+## factor(corn$FIPS)F37029  4.226e+01  5.025e+00   8.409  &lt; 2e-16 ***
+## factor(corn$FIPS)F37031  2.655e+01  5.248e+00   5.059 4.34e-07 ***
+## factor(corn$FIPS)F37033 -1.239e+01  5.092e+00  -2.432 0.015034 *  
+## factor(corn$FIPS)F37035  5.020e+00  5.017e+00   1.001 0.317043    
+## factor(corn$FIPS)F37037 -6.722e-01  5.093e+00  -0.132 0.894988    
+## factor(corn$FIPS)F37039  3.289e+01  5.096e+00   6.454 1.18e-10 ***
+## factor(corn$FIPS)F37041  2.293e+01  5.099e+00   4.497 7.02e-06 ***
+## factor(corn$FIPS)F37045 -1.108e+01  5.086e+00  -2.179 0.029360 *  
+## factor(corn$FIPS)F37047  4.370e+00  5.049e+00   0.865 0.386845    
+## factor(corn$FIPS)F37049  9.235e+00  5.016e+00   1.841 0.065629 .  
+## factor(corn$FIPS)F37051 -2.189e+00  5.086e+00  -0.430 0.666958    
+## factor(corn$FIPS)F37053  3.732e+01  5.022e+00   7.431 1.24e-13 ***
+## factor(corn$FIPS)F37057  1.723e+00  5.022e+00   0.343 0.731476    
+## factor(corn$FIPS)F37059  6.807e+00  5.033e+00   1.353 0.176269    
+## factor(corn$FIPS)F37061  3.566e+00  5.015e+00   0.711 0.477019    
+## factor(corn$FIPS)F37065 -7.321e-01  5.028e+00  -0.146 0.884256    
+## factor(corn$FIPS)F37067 -1.027e+00  5.296e+00  -0.194 0.846274    
+## factor(corn$FIPS)F37069 -2.116e+00  5.093e+00  -0.415 0.677850    
+## factor(corn$FIPS)F37073  9.986e+00  5.020e+00   1.989 0.046741 *  
+## factor(corn$FIPS)F37077 -1.460e+01  5.051e+00  -2.891 0.003850 ** 
+## factor(corn$FIPS)F37079  6.296e+00  5.061e+00   1.244 0.213545    
+## factor(corn$FIPS)F37081 -4.712e+00  5.021e+00  -0.938 0.348063    
+## factor(corn$FIPS)F37083 -5.065e+00  5.020e+00  -1.009 0.313071    
+## factor(corn$FIPS)F37089  2.737e+01  5.105e+00   5.360 8.65e-08 ***
+## factor(corn$FIPS)F37091  8.988e+00  5.053e+00   1.779 0.075315 .  
+## factor(corn$FIPS)F37093 -2.295e+00  5.122e+00  -0.448 0.654143    
+## factor(corn$FIPS)F37095  3.799e+01  5.049e+00   7.523 6.20e-14 ***
+## factor(corn$FIPS)F37097  8.359e+00  5.049e+00   1.656 0.097842 .  
+## factor(corn$FIPS)F37101 -6.027e-01  5.053e+00  -0.119 0.905076    
+## factor(corn$FIPS)F37103  6.033e+00  5.124e+00   1.177 0.239079    
+## factor(corn$FIPS)F37105 -1.076e+01  5.223e+00  -2.059 0.039520 *  
+## factor(corn$FIPS)F37107  8.308e+00  5.023e+00   1.654 0.098204 .  
+## factor(corn$FIPS)F37109 -1.027e+01  5.090e+00  -2.018 0.043600 *  
+## factor(corn$FIPS)F37117  2.615e+00  5.017e+00   0.521 0.602245    
+## factor(corn$FIPS)F37125 -9.086e+00  5.125e+00  -1.773 0.076330 .  
+## factor(corn$FIPS)F37131  5.138e+00  5.021e+00   1.023 0.306218    
+## factor(corn$FIPS)F37133  6.318e+00  5.015e+00   1.260 0.207837    
+## factor(corn$FIPS)F37135  2.314e+00  5.024e+00   0.461 0.645104    
+## factor(corn$FIPS)F37137  2.933e+01  5.017e+00   5.846 5.34e-09 ***
+## factor(corn$FIPS)F37139  3.806e+01  5.136e+00   7.411 1.44e-13 ***
+## factor(corn$FIPS)F37143  3.013e+01  5.058e+00   5.958 2.72e-09 ***
+## factor(corn$FIPS)F37145 -3.929e+00  5.059e+00  -0.777 0.437405    
+## factor(corn$FIPS)F37147 -1.029e-01  5.019e+00  -0.021 0.983637    
+## factor(corn$FIPS)F37151 -7.324e-01  5.023e+00  -0.146 0.884070    
+## factor(corn$FIPS)F37155  4.993e+00  5.051e+00   0.989 0.322890    
+## factor(corn$FIPS)F37157 -5.257e+00  5.019e+00  -1.048 0.294895    
+## factor(corn$FIPS)F37159  6.555e+00  5.028e+00   1.304 0.192455    
+## factor(corn$FIPS)F37163  2.825e+00  5.049e+00   0.560 0.575804    
+## factor(corn$FIPS)F37165 -8.759e-01  5.088e+00  -0.172 0.863328    
+## factor(corn$FIPS)F37167  8.378e+00  5.033e+00   1.665 0.096045 .  
+## factor(corn$FIPS)F37169 -6.427e+00  5.085e+00  -1.264 0.206302    
+## factor(corn$FIPS)F37171  1.948e+01  5.016e+00   3.883 0.000104 ***
+## factor(corn$FIPS)F37175  1.642e+01  5.279e+00   3.110 0.001882 ** 
+## factor(corn$FIPS)F37177  3.593e+01  5.050e+00   7.115 1.27e-12 ***
+## factor(corn$FIPS)F37179  5.845e+00  5.029e+00   1.162 0.245246    
+## factor(corn$FIPS)F37183 -1.599e+01  5.206e+00  -3.072 0.002140 ** 
+## factor(corn$FIPS)F37185 -1.451e+01  5.306e+00  -2.734 0.006269 ** 
+## factor(corn$FIPS)F37187  2.856e+01  5.056e+00   5.648 1.71e-08 ***
+## factor(corn$FIPS)F37191  4.009e+00  5.021e+00   0.798 0.424695    
+## factor(corn$FIPS)F37193  9.592e+00  5.176e+00   1.853 0.063904 .  
+## factor(corn$FIPS)F37195  6.479e+00  5.031e+00   1.288 0.197860    
+## factor(corn$FIPS)F37197  1.357e+01  5.021e+00   2.702 0.006918 ** 
+## factor(corn$FIPS)F45003 -1.545e+01  5.049e+00  -3.060 0.002225 ** 
+## factor(corn$FIPS)F45005 -8.519e+00  5.020e+00  -1.697 0.089747 .  
+## factor(corn$FIPS)F45007 -1.832e+01  5.087e+00  -3.601 0.000320 ***
+## factor(corn$FIPS)F45009 -8.667e-01  5.017e+00  -0.173 0.862844    
+## factor(corn$FIPS)F45011 -1.217e+01  5.084e+00  -2.394 0.016719 *  
+## factor(corn$FIPS)F45015 -1.967e+01  5.093e+00  -3.862 0.000114 ***
+## factor(corn$FIPS)F45017  4.590e+00  5.122e+00   0.896 0.370249    
+## factor(corn$FIPS)F45025 -1.014e+01  5.052e+00  -2.007 0.044810 *  
+## factor(corn$FIPS)F45027  7.352e+00  5.016e+00   1.466 0.142775    
+## factor(corn$FIPS)F45029 -1.470e+01  5.023e+00  -2.925 0.003454 ** 
+## factor(corn$FIPS)F45031 -3.930e+00  5.023e+00  -0.782 0.434032    
+## factor(corn$FIPS)F45033 -1.259e+00  5.020e+00  -0.251 0.801942    
+## factor(corn$FIPS)F45035 -5.718e+00  5.016e+00  -1.140 0.254373    
+## factor(corn$FIPS)F45041 -5.266e+00  5.017e+00  -1.050 0.293912    
+## factor(corn$FIPS)F45043 -1.222e+01  5.084e+00  -2.404 0.016233 *  
+## factor(corn$FIPS)F45049 -1.708e+00  5.015e+00  -0.341 0.733454    
+## factor(corn$FIPS)F45051 -1.058e-01  5.017e+00  -0.021 0.983183    
+## factor(corn$FIPS)F45055 -1.911e+00  5.167e+00  -0.370 0.711435    
+## factor(corn$FIPS)F45061 -4.793e-01  5.024e+00  -0.095 0.923990    
+## factor(corn$FIPS)F45063  1.822e+00  5.086e+00   0.358 0.720252    
+## factor(corn$FIPS)F45067  2.443e+00  5.084e+00   0.480 0.630934    
+## factor(corn$FIPS)F45069 -9.231e-01  5.017e+00  -0.184 0.854037    
+## factor(corn$FIPS)F45071 -1.147e+01  5.255e+00  -2.182 0.029133 *  
+## factor(corn$FIPS)F45075  6.958e+00  5.020e+00   1.386 0.165819    
+## factor(corn$FIPS)F45079  3.521e+00  5.202e+00   0.677 0.498545    
+## factor(corn$FIPS)F45081 -1.258e+01  5.097e+00  -2.469 0.013583 *  
+## factor(corn$FIPS)F45083 -4.531e+00  5.123e+00  -0.885 0.376461    
+## factor(corn$FIPS)F45085  9.188e+00  5.016e+00   1.832 0.067077 .  
+## factor(corn$FIPS)F45089 -9.552e+00  5.015e+00  -1.905 0.056884 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 21.27 on 5508 degrees of freedom
+## Multiple R-squared:  0.6598, Adjusted R-squared:  0.6496 
+## F-statistic: 64.74 on 165 and 5508 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(lmCorn)$r.squared</code></pre>
+<pre><code>## [1] 0.6598031</code></pre>
+</div>
+<div id="cotton-1" class="section level2">
+<h2>Cotton</h2>
+<pre class="r"><code># Cotton
+
+lmCotton &lt;- lm(cotton$Value~cotton$ExtPptDays+cotton$ExtTempDays+cotton$Year+cotton$NumZeroDays+factor(cotton$FIPS))
+summary(lmCotton)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = cotton$Value ~ cotton$ExtPptDays + cotton$ExtTempDays + 
+##     cotton$Year + cotton$NumZeroDays + factor(cotton$FIPS))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -534.26 -103.55   -2.88  104.39  458.10 
+## 
+## Coefficients:
+##                             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)               -1.821e+04  5.269e+02 -34.557  &lt; 2e-16 ***
+## cotton$ExtPptDays         -4.731e+00  9.078e-01  -5.211 2.00e-07 ***
+## cotton$ExtTempDays        -4.829e+00  2.466e-01 -19.580  &lt; 2e-16 ***
+## cotton$Year                9.479e+00  2.599e-01  36.464  &lt; 2e-16 ***
+## cotton$NumZeroDays         6.915e-01  3.088e-01   2.239 0.025203 *  
+## factor(cotton$FIPS)F13003  7.375e+01  3.584e+01   2.058 0.039684 *  
+## factor(cotton$FIPS)F13005 -4.256e+01  3.639e+01  -1.169 0.242315    
+## factor(cotton$FIPS)F13007  1.704e+02  3.540e+01   4.812 1.56e-06 ***
+## factor(cotton$FIPS)F13017  4.244e+01  3.540e+01   1.199 0.230687    
+## factor(cotton$FIPS)F13019  2.338e+01  3.537e+01   0.661 0.508777    
+## factor(cotton$FIPS)F13023 -4.934e+01  3.549e+01  -1.390 0.164563    
+## factor(cotton$FIPS)F13027  7.840e+01  3.537e+01   2.216 0.026735 *  
+## factor(cotton$FIPS)F13031 -2.419e+01  3.537e+01  -0.684 0.494058    
+## factor(cotton$FIPS)F13033 -5.038e+00  3.538e+01  -0.142 0.886764    
+## factor(cotton$FIPS)F13037  1.694e+02  3.552e+01   4.768 1.95e-06 ***
+## factor(cotton$FIPS)F13043 -7.407e+01  3.624e+01  -2.044 0.041053 *  
+## factor(cotton$FIPS)F13061  6.576e+01  3.650e+01   1.802 0.071701 .  
+## factor(cotton$FIPS)F13069  1.662e+01  3.560e+01   0.467 0.640699    
+## factor(cotton$FIPS)F13071  1.354e+02  3.539e+01   3.827 0.000132 ***
+## factor(cotton$FIPS)F13075  9.688e+01  3.540e+01   2.737 0.006240 ** 
+## factor(cotton$FIPS)F13081 -3.876e+01  3.557e+01  -1.090 0.275975    
+## factor(cotton$FIPS)F13087  2.559e+02  3.584e+01   7.140 1.15e-12 ***
+## factor(cotton$FIPS)F13091  1.722e+01  3.540e+01   0.486 0.626795    
+## factor(cotton$FIPS)F13093  1.081e+01  3.550e+01   0.304 0.760780    
+## factor(cotton$FIPS)F13099  1.269e+02  3.540e+01   3.584 0.000343 ***
+## factor(cotton$FIPS)F13107 -4.663e+01  3.541e+01  -1.317 0.187928    
+## factor(cotton$FIPS)F13131  9.605e+01  3.537e+01   2.716 0.006651 ** 
+## factor(cotton$FIPS)F13153 -5.575e+01  3.735e+01  -1.493 0.135646    
+## factor(cotton$FIPS)F13155  4.584e+01  3.537e+01   1.296 0.195134    
+## factor(cotton$FIPS)F13161  4.442e+01  3.610e+01   1.230 0.218668    
+## factor(cotton$FIPS)F13163 -5.780e+00  3.569e+01  -0.162 0.871331    
+## factor(cotton$FIPS)F13165  3.125e+01  3.591e+01   0.870 0.384200    
+## factor(cotton$FIPS)F13173  5.789e+01  3.611e+01   1.603 0.109043    
+## factor(cotton$FIPS)F13175 -1.192e+02  3.612e+01  -3.302 0.000972 ***
+## factor(cotton$FIPS)F13177  8.282e+01  3.732e+01   2.219 0.026540 *  
+## factor(cotton$FIPS)F13193 -1.981e+01  3.631e+01  -0.546 0.585440    
+## factor(cotton$FIPS)F13201  1.455e+02  3.547e+01   4.102 4.20e-05 ***
+## factor(cotton$FIPS)F13205  1.573e+02  3.540e+01   4.442 9.23e-06 ***
+## factor(cotton$FIPS)F13209 -7.435e+01  3.645e+01  -2.040 0.041440 *  
+## factor(cotton$FIPS)F13229 -5.941e+01  3.636e+01  -1.634 0.102406    
+## factor(cotton$FIPS)F13235 -2.646e+01  3.580e+01  -0.739 0.459964    
+## factor(cotton$FIPS)F13243  1.214e+02  3.619e+01   3.356 0.000801 ***
+## factor(cotton$FIPS)F13251 -1.604e+01  3.539e+01  -0.453 0.650403    
+## factor(cotton$FIPS)F13253  1.625e+02  3.540e+01   4.590 4.60e-06 ***
+## factor(cotton$FIPS)F13261  1.836e+01  3.544e+01   0.518 0.604409    
+## factor(cotton$FIPS)F13267 -5.030e+01  3.726e+01  -1.350 0.177155    
+## factor(cotton$FIPS)F13271 -5.665e+01  3.729e+01  -1.519 0.128774    
+## factor(cotton$FIPS)F13273  4.722e+01  3.543e+01   1.333 0.182645    
+## factor(cotton$FIPS)F13275  7.940e+01  3.537e+01   2.245 0.024858 *  
+## factor(cotton$FIPS)F13277  1.215e+02  3.545e+01   3.428 0.000616 ***
+## factor(cotton$FIPS)F13279 -5.429e+01  3.695e+01  -1.469 0.141861    
+## factor(cotton$FIPS)F13287  3.616e+01  3.541e+01   1.021 0.307233    
+## factor(cotton$FIPS)F13305 -6.197e+00  3.702e+01  -0.167 0.867072    
+## factor(cotton$FIPS)F13315  8.732e+00  3.541e+01   0.247 0.805237    
+## factor(cotton$FIPS)F13321  9.032e+01  3.537e+01   2.554 0.010710 *  
+## factor(cotton$FIPS)F37013  7.708e+01  3.695e+01   2.086 0.037067 *  
+## factor(cotton$FIPS)F37015  4.128e+01  3.541e+01   1.165 0.243908    
+## factor(cotton$FIPS)F37041  6.460e+01  3.560e+01   1.815 0.069665 .  
+## factor(cotton$FIPS)F37045 -8.034e+01  3.669e+01  -2.190 0.028633 *  
+## factor(cotton$FIPS)F37051 -7.157e+01  3.564e+01  -2.008 0.044712 *  
+## factor(cotton$FIPS)F37065 -2.802e+01  3.557e+01  -0.788 0.430877    
+## factor(cotton$FIPS)F37073  3.436e+01  3.546e+01   0.969 0.332643    
+## factor(cotton$FIPS)F37083  1.202e+01  3.546e+01   0.339 0.734702    
+## factor(cotton$FIPS)F37085 -5.812e+01  3.552e+01  -1.636 0.101905    
+## factor(cotton$FIPS)F37091  1.512e+01  3.544e+01   0.427 0.669594    
+## factor(cotton$FIPS)F37093  1.312e+01  3.613e+01   0.363 0.716534    
+## factor(cotton$FIPS)F37101 -7.377e+01  3.618e+01  -2.039 0.041555 *  
+## factor(cotton$FIPS)F37107  2.484e+00  3.675e+01   0.068 0.946109    
+## factor(cotton$FIPS)F37117  2.668e+00  3.541e+01   0.075 0.939940    
+## factor(cotton$FIPS)F37127 -4.266e+01  3.600e+01  -1.185 0.236112    
+## factor(cotton$FIPS)F37131  6.304e+01  3.546e+01   1.778 0.075569 .  
+## factor(cotton$FIPS)F37143  8.633e+01  3.551e+01   2.431 0.015106 *  
+## factor(cotton$FIPS)F37147 -5.981e+01  3.544e+01  -1.688 0.091575 .  
+## factor(cotton$FIPS)F37155 -1.899e+01  3.538e+01  -0.537 0.591538    
+## factor(cotton$FIPS)F37163 -1.739e+01  3.560e+01  -0.488 0.625283    
+## factor(cotton$FIPS)F37187  4.697e+01  3.550e+01   1.323 0.185901    
+## factor(cotton$FIPS)F37191 -1.545e+01  3.674e+01  -0.421 0.674071    
+## factor(cotton$FIPS)F37195 -1.794e+00  3.561e+01  -0.050 0.959822    
+## factor(cotton$FIPS)F45003  1.142e+01  3.696e+01   0.309 0.757413    
+## factor(cotton$FIPS)F45005  1.447e+01  3.734e+01   0.388 0.698407    
+## factor(cotton$FIPS)F45009 -8.692e+00  3.639e+01  -0.239 0.811246    
+## factor(cotton$FIPS)F45011 -4.078e+01  3.538e+01  -1.153 0.249103    
+## factor(cotton$FIPS)F45017  7.738e+01  3.539e+01   2.187 0.028844 *  
+## factor(cotton$FIPS)F45027  9.578e+00  3.587e+01   0.267 0.789501    
+## factor(cotton$FIPS)F45031 -1.752e+01  3.573e+01  -0.490 0.624000    
+## factor(cotton$FIPS)F45033  1.036e+01  3.545e+01   0.292 0.770119    
+## factor(cotton$FIPS)F45035 -9.878e+01  3.695e+01  -2.673 0.007547 ** 
+## factor(cotton$FIPS)F45041 -9.093e+01  3.541e+01  -2.568 0.010276 *  
+## factor(cotton$FIPS)F45049 -1.799e+01  3.561e+01  -0.505 0.613386    
+## factor(cotton$FIPS)F45061 -2.396e+01  3.551e+01  -0.675 0.499860    
+## factor(cotton$FIPS)F45067 -4.049e+01  3.666e+01  -1.105 0.269434    
+## factor(cotton$FIPS)F45069 -1.045e+01  3.542e+01  -0.295 0.768036    
+## factor(cotton$FIPS)F45075  4.670e+01  3.541e+01   1.319 0.187365    
+## factor(cotton$FIPS)F45085  1.554e+01  3.588e+01   0.433 0.664881    
+## factor(cotton$FIPS)F45089  1.160e+01  3.537e+01   0.328 0.743027    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 147.7 on 3120 degrees of freedom
+## Multiple R-squared:  0.4496, Adjusted R-squared:  0.433 
+## F-statistic: 27.11 on 94 and 3120 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(lmCotton)$r.squared</code></pre>
+<pre><code>## [1] 0.4495694</code></pre>
+</div>
+<div id="peanuts-1" class="section level2">
+<h2>Peanuts</h2>
+<pre class="r"><code># Peanuts
+
+lmPeanuts &lt;- lm(peanuts$Value~peanuts$ExtPptDays+peanuts$ExtTempDays+peanuts$Year+peanuts$NumZeroDays+factor(peanuts$FIPS))
+summary(lmPeanuts)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = peanuts$Value ~ peanuts$ExtPptDays + peanuts$ExtTempDays + 
+##     peanuts$Year + peanuts$NumZeroDays + factor(peanuts$FIPS))
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1549.44  -376.09   -13.41   358.05  2023.95 
+## 
+## Coefficients:
+##                              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                -7.019e+04  2.382e+03 -29.467  &lt; 2e-16 ***
+## peanuts$ExtPptDays         -1.249e+01  4.044e+00  -3.088 0.002044 ** 
+## peanuts$ExtTempDays        -1.471e+01  1.092e+00 -13.470  &lt; 2e-16 ***
+## peanuts$Year                3.670e+01  1.177e+00  31.188  &lt; 2e-16 ***
+## peanuts$NumZeroDays         9.658e-01  1.364e+00   0.708 0.479120    
+## factor(peanuts$FIPS)F13007  8.926e+02  1.307e+02   6.828 1.12e-11 ***
+## factor(peanuts$FIPS)F13017  2.804e+02  1.344e+02   2.086 0.037062 *  
+## factor(peanuts$FIPS)F13019 -3.127e+01  1.305e+02  -0.240 0.810647    
+## factor(peanuts$FIPS)F13023 -1.696e+02  1.382e+02  -1.227 0.219797    
+## factor(peanuts$FIPS)F13027  1.674e+02  1.305e+02   1.283 0.199639    
+## factor(peanuts$FIPS)F13031 -6.535e+01  1.332e+02  -0.491 0.623629    
+## factor(peanuts$FIPS)F13033  3.582e+02  1.305e+02   2.744 0.006112 ** 
+## factor(peanuts$FIPS)F13037  6.423e+02  1.314e+02   4.887 1.10e-06 ***
+## factor(peanuts$FIPS)F13061  1.771e+02  1.322e+02   1.340 0.180292    
+## factor(peanuts$FIPS)F13069  4.684e+01  1.305e+02   0.359 0.719667    
+## factor(peanuts$FIPS)F13071  2.453e+02  1.315e+02   1.866 0.062176 .  
+## factor(peanuts$FIPS)F13075  6.670e+01  1.307e+02   0.510 0.609859    
+## factor(peanuts$FIPS)F13081 -4.617e+02  1.334e+02  -3.460 0.000551 ***
+## factor(peanuts$FIPS)F13087  9.923e+02  1.304e+02   7.607 4.17e-14 ***
+## factor(peanuts$FIPS)F13091 -2.686e+01  1.355e+02  -0.198 0.842896    
+## factor(peanuts$FIPS)F13093 -3.133e+02  1.341e+02  -2.337 0.019550 *  
+## factor(peanuts$FIPS)F13095  5.659e+02  1.367e+02   4.140 3.61e-05 ***
+## factor(peanuts$FIPS)F13099  4.476e+02  1.325e+02   3.379 0.000741 ***
+## factor(peanuts$FIPS)F13107 -2.363e+02  1.334e+02  -1.771 0.076680 .  
+## factor(peanuts$FIPS)F13109  6.611e+01  1.381e+02   0.479 0.632167    
+## factor(peanuts$FIPS)F13131  3.446e+02  1.322e+02   2.607 0.009206 ** 
+## factor(peanuts$FIPS)F13155  1.717e+02  1.305e+02   1.316 0.188381    
+## factor(peanuts$FIPS)F13161 -1.285e+02  1.342e+02  -0.957 0.338472    
+## factor(peanuts$FIPS)F13163  7.631e+01  1.337e+02   0.571 0.568281    
+## factor(peanuts$FIPS)F13165  1.350e+00  1.336e+02   0.010 0.991941    
+## factor(peanuts$FIPS)F13175 -5.454e+02  1.343e+02  -4.061 5.06e-05 ***
+## factor(peanuts$FIPS)F13193 -1.708e+02  1.388e+02  -1.231 0.218643    
+## factor(peanuts$FIPS)F13197 -8.658e+01  1.370e+02  -0.632 0.527364    
+## factor(peanuts$FIPS)F13201  8.640e+02  1.311e+02   6.590 5.52e-11 ***
+## factor(peanuts$FIPS)F13205  7.499e+02  1.334e+02   5.621 2.14e-08 ***
+## factor(peanuts$FIPS)F13235  3.494e+01  1.343e+02   0.260 0.794858    
+## factor(peanuts$FIPS)F13243  4.276e+02  1.338e+02   3.196 0.001412 ** 
+## factor(peanuts$FIPS)F13251  7.696e+01  1.306e+02   0.589 0.555870    
+## factor(peanuts$FIPS)F13253  7.595e+02  1.315e+02   5.775 8.84e-09 ***
+## factor(peanuts$FIPS)F13259 -2.163e+02  1.383e+02  -1.564 0.118071    
+## factor(peanuts$FIPS)F13261  2.699e+02  1.327e+02   2.033 0.042162 *  
+## factor(peanuts$FIPS)F13267 -9.763e+01  1.374e+02  -0.710 0.477544    
+## factor(peanuts$FIPS)F13273  7.192e+01  1.335e+02   0.539 0.590243    
+## factor(peanuts$FIPS)F13275  5.518e+01  1.352e+02   0.408 0.683255    
+## factor(peanuts$FIPS)F13277  3.820e+01  1.310e+02   0.292 0.770676    
+## factor(peanuts$FIPS)F13279 -9.259e+01  1.375e+02  -0.673 0.500823    
+## factor(peanuts$FIPS)F13287 -1.486e+01  1.308e+02  -0.114 0.909564    
+## factor(peanuts$FIPS)F13303 -3.084e+02  1.356e+02  -2.275 0.023029 *  
+## factor(peanuts$FIPS)F13315 -1.176e+02  1.325e+02  -0.888 0.374828    
+## factor(peanuts$FIPS)F13321  4.042e+01  1.304e+02   0.310 0.756638    
+## factor(peanuts$FIPS)F37015  1.406e+02  1.308e+02   1.075 0.282529    
+## factor(peanuts$FIPS)F37017  2.629e+02  1.341e+02   1.961 0.050056 .  
+## factor(peanuts$FIPS)F37041  7.726e+02  1.319e+02   5.859 5.39e-09 ***
+## factor(peanuts$FIPS)F37047  7.441e+02  1.341e+02   5.549 3.23e-08 ***
+## factor(peanuts$FIPS)F37065 -9.064e+01  1.326e+02  -0.684 0.494297    
+## factor(peanuts$FIPS)F37073  7.625e+02  1.310e+02   5.819 6.83e-09 ***
+## factor(peanuts$FIPS)F37083 -8.269e+01  1.319e+02  -0.627 0.530858    
+## factor(peanuts$FIPS)F37091  2.082e+02  1.309e+02   1.590 0.111889    
+## factor(peanuts$FIPS)F37117  3.374e+02  1.308e+02   2.580 0.009950 ** 
+## factor(peanuts$FIPS)F37131  2.013e+02  1.311e+02   1.536 0.124702    
+## factor(peanuts$FIPS)F37143  5.429e+02  1.361e+02   3.989 6.86e-05 ***
+## factor(peanuts$FIPS)F37147 -1.482e+02  1.336e+02  -1.109 0.267573    
+## factor(peanuts$FIPS)F37155 -1.032e+02  1.352e+02  -0.764 0.445131    
+## factor(peanuts$FIPS)F37163 -2.660e+02  1.374e+02  -1.935 0.053088 .  
+## factor(peanuts$FIPS)F37187  5.194e+00  1.371e+02   0.038 0.969789    
+## factor(peanuts$FIPS)F45005  2.264e+02  1.369e+02   1.654 0.098354 .  
+## factor(peanuts$FIPS)F45011  5.725e+01  1.343e+02   0.426 0.669880    
+## factor(peanuts$FIPS)F45049  1.790e+02  1.334e+02   1.342 0.179694    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 544.6 on 2126 degrees of freedom
+## Multiple R-squared:  0.5095, Adjusted R-squared:  0.4941 
+## F-statistic: 32.97 on 67 and 2126 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(lmPeanuts)$r.squared</code></pre>
+<pre><code>## [1] 0.5095479</code></pre>
+</div>
+<div id="sweet-potatoes-1" class="section level2">
+<h2>Sweet Potatoes</h2>
+<pre class="r"><code># Sweet Potatoes
+
+
+lmSweetPotatoes&lt;- lm(sweetPotatoes$Value~sweetPotatoes$ExtPptDays+sweetPotatoes$ExtTempDays+sweetPotatoes$Year+sweetPotatoes$NumZeroDays+factor(sweetPotatoes$FIPS))
+summary(lmSweetPotatoes)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sweetPotatoes$Value ~ sweetPotatoes$ExtPptDays + 
+##     sweetPotatoes$ExtTempDays + sweetPotatoes$Year + sweetPotatoes$NumZeroDays + 
+##     factor(sweetPotatoes$FIPS))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -58.389 -14.339   1.599  13.994  57.229 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                      -5255.2598   348.6668 -15.072  &lt; 2e-16
+## sweetPotatoes$ExtPptDays            -2.6054     0.6285  -4.145 5.12e-05
+## sweetPotatoes$ExtTempDays           -0.6483     0.1868  -3.470 0.000644
+## sweetPotatoes$Year                   2.6963     0.1717  15.700  &lt; 2e-16
+## sweetPotatoes$NumZeroDays            0.5037     0.2019   2.495 0.013445
+## factor(sweetPotatoes$FIPS)F37101     0.5593     5.5778   0.100 0.920234
+## factor(sweetPotatoes$FIPS)F37127     9.9285     5.5845   1.778 0.077034
+## factor(sweetPotatoes$FIPS)F37163    16.5165     5.9235   2.788 0.005841
+## factor(sweetPotatoes$FIPS)F37191     9.8519     5.7562   1.712 0.088622
+## factor(sweetPotatoes$FIPS)F37195    20.3474     5.5306   3.679 0.000305
+##                                     
+## (Intercept)                      ***
+## sweetPotatoes$ExtPptDays         ***
+## sweetPotatoes$ExtTempDays        ***
+## sweetPotatoes$Year               ***
+## sweetPotatoes$NumZeroDays        *  
+## factor(sweetPotatoes$FIPS)F37101    
+## factor(sweetPotatoes$FIPS)F37127 .  
+## factor(sweetPotatoes$FIPS)F37163 ** 
+## factor(sweetPotatoes$FIPS)F37191 .  
+## factor(sweetPotatoes$FIPS)F37195 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 22.68 on 189 degrees of freedom
+## Multiple R-squared:  0.6065, Adjusted R-squared:  0.5877 
+## F-statistic: 32.36 on 9 and 189 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(lmSweetPotatoes)$r.squared</code></pre>
+<pre><code>## [1] 0.6064822</code></pre>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Daly, Christopher, et al. <a href="https://rmets.onlinelibrary.wiley.com/doi/abs/10.1002/joc.1688">“Physiographically sensitive mapping of climatological temperature and precipitation across the conterminous United States.”</a> International Journal of Climatology: a Journal of the Royal Meteorological Society 28.15 (2008): 2031-2064.</p>
+</div>
+</div>
